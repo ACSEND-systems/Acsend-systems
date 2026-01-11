@@ -15,7 +15,7 @@
   --shadow: rgba(0,0,0,0.6);
 }
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif;}
-body{background:var(--bg);color:var(--text);}
+body{background:#0b0b0c;color:var(--text);}
 header{display:flex;justify-content:space-between;align-items:center;padding:24px 40px;background:var(--panel);backdrop-filter:blur(20px);position:sticky;top:0;z-index:1000;border-bottom:1px solid rgba(255,255,255,0.05);}
 header h1{font-size:2rem;font-weight:800;letter-spacing:1px;}
 .nav{display:flex;gap:24px;font-weight:600;font-size:0.95rem;}
@@ -24,8 +24,24 @@ header h1{font-size:2rem;font-weight:800;letter-spacing:1px;}
 .language{margin-left:20px;padding:6px 10px;border-radius:10px;border:none;background:#111;color:#fff;cursor:pointer;}
 
 /* HERO */
-.hero{position:relative;text-align:center;padding:100px 20px 60px;background:url('https://images.pexels.com/photos/933964/pexels-photo-933964.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260') center/cover no-repeat;color:var(--text);}
-.hero::after{content:"ACSEND SYSTEMS";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:8rem;font-weight:900;opacity:0.08;white-space:nowrap;}
+.hero{
+position:relative;
+text-align:center;
+padding:100px 20px 60px;
+background: url('https://images.unsplash.com/photo-1612831455540-13b91db2b2f5?auto=format&fit=crop&w=1950&q=80') center/cover no-repeat;
+color:var(--text);
+}
+.hero::after{
+content:"ACSEND SYSTEMS";
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+font-size:8rem;
+font-weight:900;
+opacity:0.08;
+white-space:nowrap;
+}
 .hero-content{position:relative;z-index:2;}
 .hero-content h2{font-size:3rem;font-weight:800;margin-bottom:12px;letter-spacing:2px;}
 .hero-content p{font-size:1.2rem;color:var(--muted);max-width:700px;margin:auto;}
@@ -38,12 +54,20 @@ header h1{font-size:2rem;font-weight:800;letter-spacing:1px;}
 .panel .value{font-size:3rem;font-weight:700;}
 .panel p{font-size:0.95rem;color:var(--muted);}
 
-/* GOAL SELECTOR */
-.goal-selector{padding:28px;background:var(--panel);backdrop-filter:blur(20px);border-radius:24px;margin:24px auto;max-width:640px;text-align:center;box-shadow:0 12px 25px var(--shadow);}
-.goal-selector h3{font-size:1.5rem;margin-bottom:14px;}
-.goal-selector input, .goal-selector select{width:100%;padding:14px;border:none;border-radius:12px;margin-bottom:14px;background:#111;color:#fff;font-size:1rem;}
-.goal-selector button{width:100%;background:var(--accent);color:#000;font-weight:700;border:none;padding:14px;border-radius:12px;cursor:pointer;transition:0.3s;}
-.goal-selector button:hover{transform:scale(1.05);}
+/* GOALS DISPLAY */
+.goals-display{
+padding:28px;
+background:var(--panel);
+backdrop-filter:blur(20px);
+border-radius:24px;
+margin:24px auto;
+max-width:640px;
+box-shadow:0 12px 25px var(--shadow);
+}
+.goals-display h3{font-size:1.5rem;margin-bottom:14px;}
+.goal-item{background:#111;padding:12px 16px;border-radius:12px;margin-bottom:10px;color:#fff;display:flex;justify-content:space-between;align-items:center;}
+.goal-item button{background:var(--accent);border:none;padding:6px 12px;border-radius:8px;cursor:pointer;font-weight:600;transition:0.3s;}
+.goal-item button:hover{transform:scale(1.05);}
 
 /* ABOUT */
 .about{padding:80px 24px;text-align:center;background:rgba(255,255,255,0.02);border-radius:24px;margin:40px auto;max-width:1000px;line-height:1.8;box-shadow:0 12px 25px var(--shadow);}
@@ -87,25 +111,26 @@ footer{text-align:center;padding:36px;color:var(--muted);font-size:0.85rem;}
 <div class="panel">
 <h3 id="panel-2-title">TODAY'S GOALS</h3>
 <div class="value" id="todaysGoals">0</div>
-<p id="panel-2-desc">Goals selected for today</p>
+<p id="panel-2-desc">Goals for today</p>
 </div>
 
 <div class="panel">
 <h3 id="panel-3-title">DISCIPLINE SCORE</h3>
 <div class="value" id="disciplineScore">0</div>
-<p id="panel-3-desc">Total points earned from consistency</p>
+<p id="panel-3-desc">Total points earned</p>
 </div>
 </div>
 
-<div class="goal-selector">
-<h3 id="goal-select-title">Add your own goal</h3>
-<input type="text" id="customGoal" placeholder="Enter your goal">
-<button onclick="addCustomGoal()">Add Goal</button>
+<section class="goals-display">
+<h3>Your Goals</h3>
+<div id="goalList">
+<!-- Goals will appear here -->
 </div>
+</section>
 
 <section class="about">
-<h2 id="aboutTitle">What Acsend Systems Does</h2>
-<p id="aboutText">
+<h2>What Acsend Systems Does</h2>
+<p>
 At Acsend Systems we help you build discipline through structure, consistency, and accountability. 
 Track your progress, maintain your streak, and achieve your goals with a system that rewards consistency. 
 Set daily goals, measure your discipline score, and create your personal streak history. 
@@ -126,16 +151,12 @@ en:{
 panel1:"DAILY STREAK",
 panel2:"TODAY'S GOALS",
 panel3:"DISCIPLINE SCORE",
-selectTitle:"Add your own goal",
-aboutTitle:"What Acsend Systems Does",
 aboutText:"At Acsend Systems we help you build discipline through structure, consistency, and accountability. Track your progress, maintain your streak, and achieve your goals with a system that rewards consistency. Set daily goals, measure your discipline score, and create your personal streak history. No motivation. No excuses. Only structure. Join users worldwide who are enhancing their productivity. Our platform is designed to be intuitive, clean, and powerful. With Acsend Systems, every action counts toward building a consistent life."
 },
 sv:{
 panel1:"DAGAR I RAD",
 panel2:"DAGENS MÅL",
 panel3:"DISCIPLINPOÄNG",
-selectTitle:"Lägg till eget mål",
-aboutTitle:"Vad Acsend Systems gör",
 aboutText:"På Acsend Systems hjälper vi dig bygga disciplin genom struktur, konsekvens och ansvarighet. Följ din utveckling, behåll din streak och mät dina prestationer med ett system som belönar konsekvens. Sätt dagliga mål, mät dina disciplinpoäng och skapa din personliga streak-historik. Inga ursäkter. Ingen motivation. Endast struktur. Anslut dig till användare världen över som ökar sin produktivitet. Vårt system är intuitivt, rent och kraftfullt. Med Acsend Systems räknas varje handling för att bygga en konsekvent vardag."
 }
 };
@@ -144,29 +165,34 @@ currentLang=lang;
 document.getElementById('panel-1-title').innerText=langTexts[lang].panel1;
 document.getElementById('panel-2-title').innerText=langTexts[lang].panel2;
 document.getElementById('panel-3-title').innerText=langTexts[lang].panel3;
-document.getElementById('goal-select-title').innerText=langTexts[lang].selectTitle;
-document.getElementById('aboutTitle').innerText=langTexts[lang].aboutTitle;
-document.getElementById('aboutText').innerText=langTexts[lang].aboutText;
+document.querySelector('.about p').innerText=langTexts[lang].aboutText;
 }
 
 // GOALS
-let userGoals = [];
-function addCustomGoal(){
-const input=document.getElementById('customGoal');
-if(input.value.trim()!==""){
-userGoals.push(input.value.trim());
-input.value="";
-renderGoals();
-}
-}
+let userGoals = ["Sample Goal"]; // Initial goal for demonstration
 function renderGoals(){
+const listContainer=document.getElementById('goalList');
+listContainer.innerHTML="";
+userGoals.forEach((goal,index)=>{
+const goalDiv=document.createElement('div');
+goalDiv.className="goal-item";
+goalDiv.innerHTML=`<span>${goal}</span>${index===0 ? '<button onclick="addPremiumGoal()">Add Goal</button>' : ''}`;
+listContainer.appendChild(goalDiv);
+});
 document.getElementById('todaysGoals').innerText=userGoals.length;
-}
-function updatePanels(){
-document.getElementById('dailyStreak').innerText=userGoals.length>=1 ? userGoals.length : 0;
+document.getElementById('dailyStreak').innerText=userGoals.length; // Example
 document.getElementById('disciplineScore').innerText=userGoals.length*10;
 }
-setInterval(updatePanels,500);
+function addPremiumGoal(){
+if(userGoals.length<2){ // Basic premium allows 1 extra goal
+userGoals.push("New Premium Goal");
+renderGoals();
+}else{
+alert("Upgrade to Pro or Elite to add more goals!");
+}
+}
+
+renderGoals();
 </script>
 
 </body>
