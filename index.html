@@ -25,12 +25,13 @@ button { cursor:pointer; border:none; border-radius:12px; padding:12px 24px; fon
 button:hover { transform: scale(1.05); }
 
 header {
-  height:100vh;
+  height:80vh;
   background: var(--scroll-bg);
   background-size: 200% 200%;
   display:flex; flex-direction:column; justify-content:center; align-items:center;
   text-align:center;
   animation: gradientAnim 15s ease infinite;
+  position: relative;
 }
 
 @keyframes gradientAnim {
@@ -41,9 +42,18 @@ header {
 
 header h1 { font-size:4rem; font-weight:800; margin-bottom:16px; letter-spacing:3px; }
 header p { font-size:1.25rem; color:var(--muted); margin-bottom:32px; }
-.hero-buttons button { background:var(--accent); color:#000; margin:0 12px; }
 
-nav { display:flex; justify-content:center; gap:32px; background:var(--panel); backdrop-filter:blur(15px); padding:16px 0; position:sticky; top:0; z-index:1000; }
+.header-buttons {
+  position:absolute; top:20px; right:40px;
+  display:flex; gap:12px;
+}
+
+nav {
+  display:flex; justify-content:center; gap:32px;
+  background:var(--panel); backdrop-filter:blur(15px);
+  padding:16px 0; position:sticky; top:0; z-index:1000;
+}
+
 nav a { font-weight:600; color:var(--text); transition:0.3s; }
 nav a:hover { color:var(--premium-color); }
 
@@ -51,7 +61,7 @@ section { max-width:1200px; margin:0 auto; padding:60px 20px; }
 
 .card { background:var(--panel); backdrop-filter:blur(20px); border-radius:20px; padding:24px; box-shadow:0 8px 20px rgba(0,0,0,0.6); margin-bottom:40px; }
 
-.stats { display:flex; justify-content:space-around; margin-bottom:24px; }
+.stats { display:flex; justify-content:space-around; margin-bottom:24px; flex-wrap:wrap; }
 .stat h2 { font-size:2.5rem; margin-bottom:4px; }
 .stat span { color:var(--muted); font-size:0.9rem; }
 
@@ -78,32 +88,38 @@ li.completed { text-decoration:line-through; color:var(--muted); }
 
 footer { text-align:center; padding:40px; color:var(--muted); font-size:0.8rem; margin-top:40px; }
 
+.language-select { position:absolute; top:20px; left:40px; padding:8px 12px; border-radius:12px; border:none; background:#111; color:#fff; cursor:pointer; }
+
 </style>
 </head>
 <body>
 
 <header>
-  <h1>ACSEND</h1>
-  <p>Discipline measured globally. No motivation. No excuses. Only structure.</p>
-  <div class="hero-buttons">
+  <h1 id="hero-title">ACSEND</h1>
+  <p id="hero-desc">Discipline measured globally. No motivation. No excuses. Only structure.</p>
+  <div class="header-buttons">
     <button onclick="showModal('login')">Login</button>
     <button onclick="showModal('signup')">Sign Up</button>
   </div>
+  <select class="language-select" onchange="changeLanguage(this.value)">
+    <option value="en">EN</option>
+    <option value="sv">SV</option>
+  </select>
 </header>
 
 <nav>
+  <a href="#settings" id="nav-settings">Settings</a>
   <a href="#dashboard">Dashboard</a>
   <a href="#history">History</a>
-  <a href="#settings">Settings</a>
   <a href="#premium">Premium</a>
 </nav>
 
 <section id="dashboard">
   <div class="card">
     <div class="stats">
-      <div class="stat"><h2 id="streak">0</h2><span>Day Streak</span></div>
-      <div class="stat"><h2 id="score">0</h2><span>Discipline Score</span></div>
-      <div class="stat"><h2 id="goalsDone">0</h2><span>Goals Today</span></div>
+      <div class="stat"><h2 id="streak">0</h2><span id="streak-text">Day Streak</span></div>
+      <div class="stat"><h2 id="score">0</h2><span id="score-text">Discipline Score</span></div>
+      <div class="stat"><h2 id="goalsDone">0</h2><span id="goals-text">Goals Today</span></div>
     </div>
     <div class="goals">
       <input type="text" id="goalInput" placeholder="Define today's goal">
@@ -114,14 +130,12 @@ footer { text-align:center; padding:40px; color:var(--muted); font-size:0.8rem; 
 </section>
 
 <section id="history">
-  <h2>Goal History</h2>
-  <div class="card" id="historyList">
-    <!-- Fullföljda mål visas här -->
-  </div>
+  <h2 id="history-title">Goal History</h2>
+  <div class="card" id="historyList"></div>
 </section>
 
 <section id="settings">
-  <h2>Settings</h2>
+  <h2 id="settings-title">Settings</h2>
   <div class="card">
     <input type="text" id="setName" placeholder="Name">
     <input type="text" id="setCountry" placeholder="Country">
@@ -131,7 +145,7 @@ footer { text-align:center; padding:40px; color:var(--muted); font-size:0.8rem; 
 </section>
 
 <section id="premium">
-  <h2>Premium Plans</h2>
+  <h2 id="premium-title">Premium Plans</h2>
   <div class="premium-plan">
     <div class="plan-card">
       <h3>Basic</h3>
@@ -140,7 +154,7 @@ footer { text-align:center; padding:40px; color:var(--muted); font-size:0.8rem; 
         <li>Daily streak tracking</li>
         <li>Access to dashboard</li>
       </ul>
-      <button onclick="buyPlan('Basic')">Buy $4.99</button>
+      <button onclick="buyPlan('Basic',19)">Buy 19 SEK</button>
     </div>
     <div class="plan-card">
       <h3>Pro</h3>
@@ -149,7 +163,7 @@ footer { text-align:center; padding:40px; color:var(--muted); font-size:0.8rem; 
         <li>History tracking</li>
         <li>Settings customization</li>
       </ul>
-      <button onclick="buyPlan('Pro')">Buy $9.99</button>
+      <button onclick="buyPlan('Pro',59)">Buy 59 SEK</button>
     </div>
     <div class="plan-card">
       <h3>Elite</h3>
@@ -158,7 +172,7 @@ footer { text-align:center; padding:40px; color:var(--muted); font-size:0.8rem; 
         <li>Full Analytics</li>
         <li>Priority support</li>
       </ul>
-      <button onclick="buyPlan('Elite')">Buy $19.99</button>
+      <button onclick="buyPlan('Elite',129)">Buy 129 SEK</button>
     </div>
   </div>
 </section>
@@ -166,7 +180,7 @@ footer { text-align:center; padding:40px; color:var(--muted); font-size:0.8rem; 
 <!-- Login / Signup Modals -->
 <div class="modal" id="login">
   <div class="modal-content">
-    <h2>Login</h2>
+    <h2 id="login-title">Login</h2>
     <input type="email" id="loginEmail" placeholder="Email">
     <input type="password" id="loginPass" placeholder="Password">
     <button onclick="login()">Login</button>
@@ -176,7 +190,7 @@ footer { text-align:center; padding:40px; color:var(--muted); font-size:0.8rem; 
 
 <div class="modal" id="signup">
   <div class="modal-content">
-    <h2>Sign Up</h2>
+    <h2 id="signup-title">Sign Up</h2>
     <input type="text" id="signupName" placeholder="Name">
     <input type="text" id="signupCountry" placeholder="Country">
     <input type="email" id="signupEmail" placeholder="Email">
@@ -189,99 +203,133 @@ footer { text-align:center; padding:40px; color:var(--muted); font-size:0.8rem; 
 <footer>© Acsend — Consistency Measured</footer>
 
 <script>
-  // ==== Modal Logic ====
-  function showModal(id){ document.getElementById(id).style.display='flex'; }
-  function closeModal(id){ document.getElementById(id).style.display='none'; }
+let users = JSON.parse(localStorage.getItem('users'))||[];
+let currentUser=null;
+let historyLog=[];
 
-  // ==== Users ====
-  let users = JSON.parse(localStorage.getItem('users'))||[];
-  let currentUser=null;
-  let historyLog=[];
-
-  function signup(){
-    const name=document.getElementById('signupName').value;
-    const country=document.getElementById('signupCountry').value;
-    const email=document.getElementById('signupEmail').value;
-    const pass=document.getElementById('signupPass').value;
-    if(!name||!country||!email||!pass) return alert('Fill all fields');
-    if(users.find(u=>u.email===email)) return alert('User exists');
-    users.push({name,email,country,password:pass,streak:0,score:0,goals:[],premium:'Basic',lastLogin:null});
-    localStorage.setItem('users',JSON.stringify(users));
-    alert('Account created!'); closeModal('signup');
+// ==== Language ====
+const texts = {
+  en: {
+    hero: "Discipline measured globally. No motivation. No excuses. Only structure.",
+    streak: "Day Streak",
+    score: "Discipline Score",
+    goals: "Goals Today",
+    history: "Goal History",
+    settings: "Settings",
+    premium: "Premium Plans",
+    login: "Login",
+    signup: "Sign Up"
+  },
+  sv: {
+    hero: "Disciplin mäts globalt. Ingen motivation. Inga ursäkter. Endast struktur.",
+    streak: "Dagar i rad",
+    score: "Disciplinpoäng",
+    goals: "Dagens mål",
+    history: "Målhistorik",
+    settings: "Inställningar",
+    premium: "Premiumplaner",
+    login: "Logga in",
+    signup: "Registrera"
   }
+};
 
-  function login(){
-    const email=document.getElementById('loginEmail').value;
-    const pass=document.getElementById('loginPass').value;
-    const u=users.find(u=>u.email===email && u.password===pass);
-    if(!u) return alert('Wrong credentials');
-    currentUser=u;
-    closeModal('login');
-    showDashboard();
-  }
+function changeLanguage(lang){
+  document.getElementById('hero-desc').innerText=texts[lang].hero;
+  document.getElementById('streak-text').innerText=texts[lang].streak;
+  document.getElementById('score-text').innerText=texts[lang].score;
+  document.getElementById('goals-text').innerText=texts[lang].goals;
+  document.getElementById('history-title').innerText=texts[lang].history;
+  document.getElementById('settings-title').innerText=texts[lang].settings;
+  document.getElementById('premium-title').innerText=texts[lang].premium;
+  document.getElementById('login-title').innerText=texts[lang].login;
+  document.getElementById('signup-title').innerText=texts[lang].signup;
+}
 
-  function showDashboard(){
-    document.getElementById('dashboard').scrollIntoView({behavior:'smooth'});
-    render();
-  }
+// ==== Modal Logic ====
+function showModal(id){ document.getElementById(id).style.display='flex'; }
+function closeModal(id){ document.getElementById(id).style.display='none'; }
 
-  function save(){
-    const idx=users.findIndex(u=>u.email===currentUser.email);
-    users[idx]=currentUser;
-    localStorage.setItem('users',JSON.stringify(users));
-  }
+// ==== Users ====
+function signup(){
+  const name=document.getElementById('signupName').value;
+  const country=document.getElementById('signupCountry').value;
+  const email=document.getElementById('signupEmail').value;
+  const pass=document.getElementById('signupPass').value;
+  if(!name||!country||!email||!pass) return alert('Fill all fields');
+  if(users.find(u=>u.email===email)) return alert('User exists');
+  users.push({name,email,country,password:pass,streak:0,score:0,goals:[],premium:'Basic',lastLogin:null});
+  localStorage.setItem('users',JSON.stringify(users));
+  alert('Account created!'); closeModal('signup');
+}
 
-  function addGoal(){
-    const input=document.getElementById('goalInput');
-    if(!input.value) return;
-    const maxGoals=currentUser.premium==='Elite'?100 : currentUser.premium==='Pro'?20 : 5;
-    if(currentUser.goals.length>=maxGoals){ alert('Upgrade to Premium for more goals'); return; }
-    currentUser.goals.push({text:input.value,completed:false});
-    input.value='';
-    render();
-  }
+function login(){
+  const email=document.getElementById('loginEmail').value;
+  const pass=document.getElementById('loginPass').value;
+  const u=users.find(u=>u.email===email && u.password===pass);
+  if(!u) return alert('Wrong credentials');
+  currentUser=u;
+  closeModal('login');
+  showDashboard();
+}
 
-  function toggleGoal(index){
-    currentUser.goals[index].completed=!currentUser.goals[index].completed;
-    currentUser.score+=currentUser.goals[index].completed?2:-2;
-    if(currentUser.goals[index].completed) historyLog.push(currentUser.goals[index].text);
-    save();
-    render();
-  }
+function showDashboard(){ document.getElementById('dashboard').scrollIntoView({behavior:'smooth'}); render(); }
 
-  function render(){
-    const list=document.getElementById('goalList'); list.innerHTML='';
-    currentUser.goals.forEach((goal,i)=>{
-      const li=document.createElement('li');
-      li.className=goal.completed?'completed':'';
-      li.innerHTML=`${goal.text} <button class="complete-btn" onclick="toggleGoal(${i})">${goal.completed?'Undo':'Done'}</button>`;
-      list.appendChild(li);
-    });
-    document.getElementById('streak').innerText=currentUser.streak;
-    document.getElementById('score').innerText=currentUser.score;
-    document.getElementById('goalsDone').innerText=currentUser.goals.filter(g=>g.completed).length;
+function save(){
+  const idx=users.findIndex(u=>u.email===currentUser.email);
+  users[idx]=currentUser;
+  localStorage.setItem('users',JSON.stringify(users));
+}
 
-    // History
-    const hist=document.getElementById('historyList');
-    hist.innerHTML=historyLog.map(h=>`<div>${h}</div>`).join('');
-  }
+function addGoal(){
+  const input=document.getElementById('goalInput');
+  if(!input.value) return;
+  const maxGoals=currentUser.premium==='Elite'?100 : currentUser.premium==='Pro'?20 : 5;
+  if(currentUser.goals.length>=maxGoals){ alert('Upgrade to Premium for more goals'); return; }
+  currentUser.goals.push({text:input.value,completed:false});
+  input.value='';
+  render();
+}
 
-  function saveSettings(){
-    currentUser.name=document.getElementById('setName').value;
-    currentUser.country=document.getElementById('setCountry').value;
-    currentUser.email=document.getElementById('setEmail').value;
-    save();
-    alert('Settings saved!');
-  }
+function toggleGoal(index){
+  currentUser.goals[index].completed=!currentUser.goals[index].completed;
+  currentUser.score+=currentUser.goals[index].completed?2:-2;
+  if(currentUser.goals[index].completed) historyLog.push(currentUser.goals[index].text);
+  save(); render();
+}
 
-  function buyPlan(plan){
-    currentUser.premium=plan;
-    save();
-    alert(`${plan} plan activated!`);
-    render();
-  }
+function render(){
+  if(!currentUser) return;
+  const list=document.getElementById('goalList'); list.innerHTML='';
+  currentUser.goals.forEach((goal,i)=>{
+    const li=document.createElement('li');
+    li.className=goal.completed?'completed':'';
+    li.innerHTML=`${goal.text} <button class="complete-btn" onclick="toggleGoal(${i})">${goal.completed?'Undo':'Done'}</button>`;
+    list.appendChild(li);
+  });
+  document.getElementById('streak').innerText=currentUser.streak;
+  document.getElementById('score').innerText=currentUser.score;
+  document.getElementById('goalsDone').innerText=currentUser.goals.filter(g=>g.completed).length;
+
+  // History
+  const hist=document.getElementById('historyList');
+  hist.innerHTML=historyLog.map(h=>`<div>${h}</div>`).join('');
+}
+
+function saveSettings(){
+  currentUser.name=document.getElementById('setName').value;
+  currentUser.country=document.getElementById('setCountry').value;
+  currentUser.email=document.getElementById('setEmail').value;
+  save();
+  alert('Settings saved!');
+}
+
+function buyPlan(plan,price){
+  currentUser.premium=plan;
+  save();
+  alert(`${plan} plan activated for ${price} SEK!`);
+  render();
+}
 
 </script>
-
 </body>
 </html>
