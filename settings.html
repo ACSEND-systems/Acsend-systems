@@ -1,28 +1,116 @@
-<h2 id="welcomeMessage">Good morning, User!</h2>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Settings • Acsend</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0b0b0c;
+  --text:#fff;
+  --panel:rgba(24,24,26,0.85);
+  --accent:#FFD700;
+}
+body{margin:0;font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);}
+header{display:flex;justify-content:space-between;align-items:center;padding:20px 40px;background:var(--panel);backdrop-filter:blur(15px);}
+header h1{font-weight:800;}
+.nav span{margin-left:20px;cursor:pointer;}
+.container{max-width:600px;margin:40px auto;padding:20px;background:var(--panel);backdrop-filter:blur(15px);border-radius:24px;}
+.container h2{margin-bottom:20px;}
+label{display:block;margin-top:16px;margin-bottom:6px;}
+input, select{width:100%;padding:10px;border:none;border-radius:10px;background:#111;color:#fff;}
+button{margin-top:20px;padding:12px 20px;background:var(--accent);color:#000;font-weight:600;border:none;border-radius:12px;cursor:pointer;}
+</style>
+</head>
+<body>
+
+<header>
+<h1>Acsend Settings</h1>
+<div class="nav">
+<span onclick="goDashboard()">Dashboard</span>
+</div>
+</header>
+
+<div class="container">
+<h2>Edit Profile</h2>
+
+<label for="name">Name / Namn</label>
+<input type="text" id="name" placeholder="Your name">
+
+<label for="country">Country / Land</label>
+<input type="text" id="country" placeholder="Your country">
+
+<label for="email">Email</label>
+<input type="email" id="email" placeholder="Your email">
+
+<label for="language">Language / Språk</label>
+<select id="languageSelect" onchange="updateLanguage()">
+<option value="en">English</option>
+<option value="sv">Svenska</option>
+</select>
+
+<label for="timezone">Timezone / Tidszon</label>
+<select id="timezoneSelect">
+<option value="UTC-12:00">(UTC-12:00) International Date Line West</option>
+<option value="UTC-11:00">(UTC-11:00) Midway Island</option>
+<option value="UTC-10:00">(UTC-10:00) Hawaii</option>
+<option value="UTC-09:00">(UTC-09:00) Alaska</option>
+<option value="UTC-08:00">(UTC-08:00) Pacific Time (US & Canada)</option>
+<option value="UTC-07:00">(UTC-07:00) Mountain Time (US & Canada)</option>
+<option value="UTC-06:00">(UTC-06:00) Central Time (US & Canada)</option>
+<option value="UTC-05:00">(UTC-05:00) Eastern Time (US & Canada)</option>
+<option value="UTC+01:00">(UTC+01:00) Central European Time</option>
+<option value="UTC+02:00">(UTC+02:00) Eastern European Time</option>
+<option value="UTC+03:00">(UTC+03:00) Moscow Time</option>
+<option value="UTC+08:00">(UTC+08:00) China Standard Time</option>
+<option value="UTC+09:00">(UTC+09:00) Japan Standard Time</option>
+<option value="UTC+10:00">(UTC+10:00) Australian Eastern Time</option>
+</select>
+
+<button onclick="saveSettings()">Save Settings</button>
+</div>
 
 <script>
-// Get saved settings
-let currentLang = localStorage.getItem('language') || 'en';
-let currentTZ = localStorage.getItem('timezone') || 'UTC+01:00';
+// Load saved settings
+document.addEventListener('DOMContentLoaded', ()=>{
+  const settings = JSON.parse(localStorage.getItem('profile')) || {};
+  document.getElementById('name').value = settings.name || '';
+  document.getElementById('country').value = settings.country || '';
+  document.getElementById('email').value = settings.email || '';
+  document.getElementById('languageSelect').value = settings.language || 'en';
+  document.getElementById('timezoneSelect').value = settings.timezone || 'UTC+01:00';
+});
 
-// Update welcome message based on timezone and language
-function updateGreeting(){
-  const now = new Date();
-  // Convert to selected timezone (approximate)
-  const tzOffset = parseInt(currentTZ.split(':')[0].replace('UTC',''));
-  now.setHours(now.getUTCHours() + tzOffset);
-
-  let hour = now.getHours();
-  let greeting;
-  if(hour>=5 && hour<12) greeting = currentLang==='en'?"Good morning":"God morgon";
-  else if(hour>=12 && hour<17) greeting = currentLang==='en'?"Good afternoon":"God eftermiddag";
-  else if(hour>=17 && hour<21) greeting = currentLang==='en'?"Good evening":"God kväll";
-  else greeting = currentLang==='en'?"Good night":"God natt";
-
-  document.getElementById('welcomeMessage').innerText = `${greeting}, User!`;
+// Save settings to localStorage
+function saveSettings(){
+  const profile = {
+    name: document.getElementById('name').value,
+    country: document.getElementById('country').value,
+    email: document.getElementById('email').value,
+    language: document.getElementById('languageSelect').value,
+    timezone: document.getElementById('timezoneSelect').value
+  };
+  localStorage.setItem('profile', JSON.stringify(profile));
+  alert(profile.language==='en'?"Settings saved!":"Inställningar sparade!");
+  // Update language immediately
+  updateLanguage();
 }
 
-// Run on load
-updateGreeting();
+// Go to dashboard
+function goDashboard(){
+  window.location.href='dashboard.html';
+}
+
+// Update language globally
+function updateLanguage(){
+  const profile = JSON.parse(localStorage.getItem('profile')) || {};
+  profile.language = document.getElementById('languageSelect').value;
+  localStorage.setItem('profile', JSON.stringify(profile));
+  // Reload all pages texts dynamically
+  location.reload();
+}
 </script>
 
+</body>
+</html>
