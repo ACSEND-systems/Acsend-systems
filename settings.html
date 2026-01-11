@@ -1,1 +1,28 @@
+<h2 id="welcomeMessage">Good morning, User!</h2>
+
+<script>
+// Get saved settings
+let currentLang = localStorage.getItem('language') || 'en';
+let currentTZ = localStorage.getItem('timezone') || 'UTC+01:00';
+
+// Update welcome message based on timezone and language
+function updateGreeting(){
+  const now = new Date();
+  // Convert to selected timezone (approximate)
+  const tzOffset = parseInt(currentTZ.split(':')[0].replace('UTC',''));
+  now.setHours(now.getUTCHours() + tzOffset);
+
+  let hour = now.getHours();
+  let greeting;
+  if(hour>=5 && hour<12) greeting = currentLang==='en'?"Good morning":"God morgon";
+  else if(hour>=12 && hour<17) greeting = currentLang==='en'?"Good afternoon":"God eftermiddag";
+  else if(hour>=17 && hour<21) greeting = currentLang==='en'?"Good evening":"God kväll";
+  else greeting = currentLang==='en'?"Good night":"God natt";
+
+  document.getElementById('welcomeMessage').innerText = `${greeting}, User!`;
+}
+
+// Run on load
+updateGreeting();
+</script>
 
