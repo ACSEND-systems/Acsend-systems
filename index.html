@@ -1,1 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Acsend — Discipline System</title>
 
+  <style>
+    :root {
+      --bg: #0b0b0c;
+      --panel: #141416;
+      --text: #ffffff;
+      --muted: #8a8a8f;
+      --accent: #ffffff;
+      --danger: #ff4d4d;
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    header {
+      padding: 80px 24px 40px;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 3rem;
+      letter-spacing: 2px;
+      margin-bottom: 12px;
+    }
+
+    header p {
+      color: var(--muted);
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    main {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 24px;
+      display: grid;
+      gap: 24px;
+    }
+
+    .card {
+      background: var(--panel);
+      border-radius: 16px;
+      padding: 24px;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      text-align: center;
+    }
+
+    .stat h2 {
+      margin: 0;
+      font-size: 2rem;
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .goals input {
+      width: 100%;
+      padding: 14px;
+      border-radius: 12px;
+      border: none;
+      background: #1c1c1f;
+      color: var(--text);
+      margin-bottom: 12px;
+    }
+
+    .goals button {
+      width: 100%;
+      padding: 14px;
+      border-radius: 12px;
+      border: none;
+      background: var(--accent);
+      color: #000;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin-top: 16px;
+    }
+
+    li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px;
+      border-bottom: 1px solid #222;
+    }
+
+    li.completed {
+      text-decoration: line-through;
+      color: var(--muted);
+    }
+
+    .complete-btn {
+      background: none;
+      border: none;
+      color: var(--accent);
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    footer {
+      text-align: center;
+      padding: 40px;
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>ACSEND</h1>
+  <p>
+    A discipline system that measures consistency through daily action.
+    No motivation. No excuses. Only structure.
+  </p>
+</header>
+
+<main>
+  <div class="card stats">
+    <div class="stat">
+      <h2 id="streak">0</h2>
+      <span>Day Streak</span>
+    </div>
+    <div class="stat">
+      <h2 id="score">0</h2>
+      <span>Discipline Score</span>
+    </div>
+    <div class="stat">
+      <h2 id="goalsDone">0</h2>
+      <span>Goals Today</span>
+    </div>
+  </div>
+
+  <div class="card goals">
+    <input type="text" id="goalInput" placeholder="Define today's goal"/>
+    <button onclick="addGoal()">Add Goal</button>
+
+    <ul id="goalList"></ul>
+  </div>
+</main>
+
+<footer>
+  © Acsend — Consistency Measured
+</footer>
+
+<script>
+  let goals = JSON.parse(localStorage.getItem("goals")) || [];
+  let streak = Number(localStorage.getItem("streak")) || 0;
+  let score = Number(localStorage.getItem("score")) || 0;
+  let lastDate = localStorage.getItem("lastDate");
+
+  const today = new Date().toDateString();
+
+  if (lastDate !== today) {
+    if (goals.every(g => g.completed) && goals.length > 0) {
+      streak++;
+      score += 10;
+    } else if (goals.length > 0) {
+      streak = 0;
+      score -= 5;
+    }
+    goals = [];
+    localStorage.setItem("lastDate", today);
+  }
+
+  function save() {
+    localStorage.setItem("goals", JSON.stringify(goals));
+    localStorage.setItem("streak", streak);
+    localStorage.setItem("score", score);
+  }
+
+  function addGoal() {
+    const input = document.getElementById("goalInput");
+    if (!input.value) return;
+    goals.push({ text: input.value, completed: false });
+    input.value = "";
+    render();
+  }
+
+  function toggleGoal(index) {
+    goals[index].completed = !goals[index].completed;
+    score += goals[index].completed ? 2 : -2;
+    save();
+    render();
+  }
+
+  function render() {
+    const list = document.getElementById("goalList");
+    list.innerHTML = "";
+
+    goals.forEach((goal, i) => {
+      const li = document.createElement("li");
+      li.className = goal.completed ? "completed" : "";
+      li.innerHTML = `
+        ${goal.text}
+        <button class="complete-btn" onclick="toggleGoal(${i})">
+          ${goal.completed ? "Undo" : "Done"}
+        </button>
+      `;
+      list.appendChild(li);
+    });
+
+    document.getElementById("streak").innerText = streak;
+    document.getElementById("score").innerText = score;
+    document.getElementById("goalsDone").innerText =
+      goals.filter(g => g.completed).length;
+
+    save();
+  }
+
+  render();
+</script>
+
+</body>
+</html>
