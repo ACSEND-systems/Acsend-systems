@@ -189,3 +189,155 @@ function showDetail(type){
 
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard • Acsend</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0b0b0c;
+  --text:#fff;
+  --panel:rgba(24,24,26,0.85);
+  --accent:#FFD700;
+  --shadow:rgba(0,0,0,0.6);
+}
+body{margin:0;font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);}
+header{display:flex;justify-content:space-between;align-items:center;padding:20px 40px;background:var(--panel);backdrop-filter:blur(20px);}
+header h1{font-weight:800;}
+.nav span{margin-left:20px;cursor:pointer;}
+.hero{position:relative;text-align:center;padding:100px 20px;background: linear-gradient(rgba(11,11,12,0.7), rgba(11,11,12,0.7)), url('https://images.unsplash.com/photo-1605902711622-cfb43c443cb0?auto=format&fit=crop&w=1950&q=80') center/cover no-repeat;color:var(--text);}
+.hero::after{content:"ACSEND SYSTEMS";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:8rem;font-weight:900;opacity:0.08;white-space:nowrap;}
+.hero-content{position:relative;z-index:2;}
+.hero-content h2{font-size:3rem;font-weight:800;margin-bottom:12px;letter-spacing:2px;}
+.panels{display:flex;justify-content:space-around;gap:24px;padding:40px 24px;flex-wrap:wrap;}
+.panel{flex:1 1 250px;background:var(--panel);backdrop-filter:blur(15px);border-radius:24px;padding:36px 20px;box-shadow:0 12px 25px var(--shadow);text-align:center;transition:0.3s;min-width:250px;cursor:pointer;}
+.panel:hover{transform:translateY(-8px) scale(1.03);box-shadow:0 20px 40px var(--shadow);}
+.panel h3{font-size:1.8rem;margin-bottom:8px;color:var(--accent);}
+.panel .value{font-size:3rem;font-weight:700;}
+.panel p{font-size:0.95rem;color:rgba(255,255,255,0.7);}
+.progress-bar-container{background:rgba(255,255,255,0.1);border-radius:12px;height:12px;margin-top:10px;}
+.progress-bar{height:12px;border-radius:12px;background:var(--accent);width:0%;transition:0.5s;}
+.about{padding:80px 24px;text-align:center;background:rgba(255,255,255,0.02);border-radius:24px;margin:40px auto;max-width:1000px;line-height:1.8;box-shadow:0 12px 25px var(--shadow);}
+.about h2{font-size:2.4rem;margin-bottom:16px;}
+.about p{font-size:1.2rem;color:rgba(255,255,255,0.7);}
+footer{text-align:center;padding:36px;color:rgba(255,255,255,0.6);font-size:0.85rem;}
+</style>
+</head>
+<body>
+
+<header>
+<h1>Acsend Systems</h1>
+<div class="nav">
+<span onclick="goDashboard()">Dashboard</span>
+<span onclick="goHistory()">History</span>
+<span onclick="goSettings()">Settings</span>
+<span onclick="goPremium()">Premium</span>
+</div>
+</header>
+
+<div class="hero">
+<div class="hero-content">
+<h2 id="welcomeMessage">Welcome, User!</h2>
+<p id="heroSubtitle">No motivation. No excuses. Only structure.</p>
+</div>
+</div>
+
+<div class="panels">
+<div class="panel">
+<h3 id="streakTitle">DAILY STREAK</h3>
+<div class="value" id="dailyStreak">5</div>
+<p>Longest run of completed goals</p>
+<div class="progress-bar-container"><div class="progress-bar" id="streakBar"></div></div>
+</div>
+
+<div class="panel">
+<h3 id="todayTitle">TODAY'S GOALS</h3>
+<div class="value" id="todaysGoals">3</div>
+<p>Goals completed today</p>
+<div class="progress-bar-container"><div class="progress-bar" id="todayBar"></div></div>
+</div>
+
+<div class="panel">
+<h3 id="scoreTitle">DISCIPLINE SCORE</h3>
+<div class="value" id="disciplineScore">150</div>
+<p>Total points earned</p>
+<div class="progress-bar-container"><div class="progress-bar" id="scoreBar"></div></div>
+</div>
+</div>
+
+<section class="about">
+<h2>What Acsend Systems Does</h2>
+<p>At Acsend Systems we help you build discipline through structure, consistency, and accountability. Track your progress, maintain your streak, and achieve your goals with a system that rewards consistency. No motivation. No excuses. Only structure.</p>
+</section>
+
+<footer>© Acsend — Consistency Measured</footer>
+
+<script>
+// Load profile settings
+const profile = JSON.parse(localStorage.getItem('profile')) || {language:'en', timezone:'UTC+01:00'};
+const language = profile.language;
+
+// Language dictionary
+const langTexts = {
+en:{morning:"Good morning", afternoon:"Good afternoon", evening:"Good evening", night:"Good night", hero:"No motivation. No excuses. Only structure.", streak:"DAILY STREAK", today:"TODAY'S GOALS", score:"DISCIPLINE SCORE"},
+sv:{morning:"God morgon", afternoon:"God eftermiddag", evening:"God kväll", night:"God natt", hero:"Ingen motivation. Inga ursäkter. Bara struktur.", streak:"DAGAR I RAD", today:"DAGENS MÅL", score:"DISCIPLINPOÄNG"}
+};
+
+// Update greeting based on timezone
+function updateGreeting(){
+  const now = new Date();
+  const tzOffset = parseInt(profile.timezone.split(':')[0].replace('UTC',''));
+  now.setHours(now.getUTCHours() + tzOffset);
+
+  const hour = now.getHours();
+  let greet;
+  if(hour>=5 && hour<12) greet=langTexts[language].morning;
+  else if(hour>=12 && hour<17) greet=langTexts[language].afternoon;
+  else if(hour>=17 && hour<21) greet=langTexts[language].evening;
+  else greet=langTexts[language].night;
+
+  document.getElementById('welcomeMessage').innerText = `${greet}, ${profile.name || 'User'}!`;
+  document.getElementById('heroSubtitle').innerText = langTexts[language].hero;
+
+  // Update panel titles
+  document.getElementById('streakTitle').innerText = langTexts[language].streak;
+  document.getElementById('todayTitle').innerText = langTexts[language].today;
+  document.getElementById('scoreTitle').innerText = langTexts[language].score;
+}
+
+// Example streak daily reset
+function checkNewDay(){
+  const lastVisit = localStorage.getItem('lastVisit');
+  const today = new Date().toDateString();
+  if(lastVisit !== today){
+    localStorage.setItem('lastVisit', today);
+    let streak = parseInt(localStorage.getItem('streak') || 0);
+    streak++; // Add 1 day streak automatically
+    localStorage.setItem('streak', streak);
+    document.getElementById('dailyStreak').innerText = streak;
+  }else{
+    document.getElementById('dailyStreak').innerText = localStorage.getItem('streak') || 0;
+  }
+}
+
+// Initialize progress bars
+document.getElementById('streakBar').style.width="80%";
+document.getElementById('todayBar').style.width="60%";
+document.getElementById('scoreBar').style.width="75%";
+
+// Navigation
+function goDashboard(){window.location.href='dashboard.html';}
+function goSettings(){window.location.href='settings.html';}
+function goHistory(){window.location.href='history.html';}
+function goPremium(){window.location.href='premium.html';}
+
+// Run
+updateGreeting();
+checkNewDay();
+</script>
+
+</body>
+</html>
