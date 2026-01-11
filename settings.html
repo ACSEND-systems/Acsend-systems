@@ -1,1 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Acsend — Settings</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#0b0b0c;
+  --panel:rgba(20,20,22,0.85);
+  --text:#fff;
+  --accent:#FFD700;
+  --muted:#8a8a8f;
+}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif;}
+body{background:var(--bg);color:var(--text);}
+header{display:flex;justify-content:space-between;align-items:center;padding:20px 40px;background:var(--panel);backdrop-filter:blur(15px);}
+header h1{font-weight:800;}
+.nav-links a{margin-left:20px;color:var(--text);text-decoration:none;font-weight:600;}
+.nav-links a:hover{color:var(--accent);}
+.language-select{padding:6px 10px;border-radius:12px;border:none;background:#111;color:#fff;}
+section{max-width:800px;margin:60px auto;padding:20px;}
+.card{background:var(--panel);backdrop-filter:blur(15px);border-radius:20px;padding:24px;box-shadow:0 8px 20px rgba(0,0,0,0.6);}
+.card h2{margin-bottom:20px;}
+label{display:block;margin-top:12px;margin-bottom:6px;}
+input, select{width:100%;padding:12px;border-radius:12px;border:none;margin-bottom:12px;background:#111;color:#fff;}
+button{padding:12px;background:var(--accent);color:#000;font-weight:700;border-radius:12px;border:none;cursor:pointer;width:100%;}
+button:hover{transform:scale(1.03);}
+footer{text-align:center;padding:40px;color:var(--muted);}
+</style>
+</head>
+<body>
 
+<header>
+  <h1>ACSEND</h1>
+  <div>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="history.html">History</a>
+    <a href="settings.html">Settings</a>
+    <a href="premium.html">Premium</a>
+    <select class="language-select" onchange="changeLanguage(this.value)">
+      <option value="en">EN</option>
+      <option value="sv">SV</option>
+    </select>
+  </div>
+</header>
+
+<section>
+  <div class="card">
+    <h2 id="settingsTitle">Settings</h2>
+    
+    <label id="nameLabel">Name</label>
+    <input type="text" id="nameInput" placeholder="Your name">
+
+    <label id="emailLabel">Email</label>
+    <input type="email" id="emailInput" placeholder="you@example.com">
+
+    <label id="countryLabel">Country</label>
+    <select id="countrySelect">
+      <option value="SE">Sweden</option>
+      <option value="US">United States</option>
+      <option value="UK">United Kingdom</option>
+      <option value="NO">Norway</option>
+      <option value="DE">Germany</option>
+    </select>
+
+    <label id="premiumLabel">Premium Status</label>
+    <p id="premiumStatus">Not Premium</p>
+    
+    <button onclick="saveSettings()">Save Settings</button>
+  </div>
+</section>
+
+<footer>© Acsend — Consistency Measured</footer>
+
+<script>
+let currentLang='en';
+const texts={
+  en:{
+    settingsTitle:"Settings",
+    name:"Name",
+    email:"Email",
+    country:"Country",
+    premium:"Premium Status",
+    save:"Save Settings",
+    premiumStatus:"Not Premium",
+  },
+  sv:{
+    settingsTitle:"Inställningar",
+    name:"Namn",
+    email:"E-post",
+    country:"Land",
+    premium:"Premium-status",
+    save:"Spara Inställningar",
+    premiumStatus:"Inte Premium",
+  }
+};
+
+function changeLanguage(lang){
+  currentLang=lang;
+  document.getElementById('settingsTitle').innerText=texts[lang].settingsTitle;
+  document.querySelector('label[for="nameInput"], #nameLabel').innerText=texts[lang].name;
+  document.querySelector('label[for="emailInput"], #emailLabel').innerText=texts[lang].email;
+  document.querySelector('label[for="countrySelect"], #countryLabel').innerText=texts[lang].country;
+  document.getElementById('premiumLabel').innerText=texts[lang].premium;
+  document.getElementById('saveBtn')?.innerText=texts[lang].save;
+  document.getElementById('premiumStatus').innerText=texts[lang].premiumStatus;
+}
+
+// Simulera inställningar
+function saveSettings(){
+  const name=document.getElementById('nameInput').value;
+  const email=document.getElementById('emailInput').value;
+  const country=document.getElementById('countrySelect').value;
+  alert(`Settings saved!\nName: ${name}\nEmail: ${email}\nCountry: ${country}`);
+  // Här kan du lägga till lagring i localStorage eller koppla till backend
+}
+</script>
+
+</body>
+</html>
