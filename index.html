@@ -13,55 +13,27 @@
   --muted: #8a8a8f;
   --accent: #fff;
   --premium-color: #FFD700;
-  --scroll-bg: linear-gradient(135deg, #111, #222, #111);
 }
-
 * { box-sizing:border-box; margin:0; padding:0; font-family:'Inter',sans-serif; }
-body { background: var(--bg-dark); color: var(--text); min-height:100vh; overflow-x:hidden; scroll-behavior:smooth; }
-
+body { background:var(--bg-dark); color:var(--text); min-height:100vh; overflow-x:hidden; }
 a { text-decoration:none; color:inherit; }
-
 button { cursor:pointer; border:none; border-radius:12px; padding:12px 24px; font-weight:600; transition:all 0.3s ease; }
-button:hover { transform: scale(1.05); }
+button:hover { transform:scale(1.05); }
 
-header {
-  height:80vh;
-  background: var(--scroll-bg);
-  background-size: 200% 200%;
-  display:flex; flex-direction:column; justify-content:center; align-items:center;
-  text-align:center;
-  animation: gradientAnim 15s ease infinite;
-  position: relative;
-}
+header { display:flex; justify-content:space-between; align-items:center; padding:20px 40px; background:var(--panel); backdrop-filter:blur(15px); position:sticky; top:0; z-index:1000; }
+header h1 { font-size:2rem; font-weight:800; }
+.nav-links { display:flex; gap:24px; }
+.nav-links a { font-weight:600; color:var(--text); transition:0.3s; }
+.nav-links a:hover { color:var(--premium-color); }
 
-@keyframes gradientAnim {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
+.language-select { padding:6px 10px; border-radius:12px; border:none; background:#111; color:#fff; cursor:pointer; }
 
-header h1 { font-size:4rem; font-weight:800; margin-bottom:16px; letter-spacing:3px; }
-header p { font-size:1.25rem; color:var(--muted); margin-bottom:32px; }
-
-.header-buttons {
-  position:absolute; top:20px; right:40px;
-  display:flex; gap:12px;
-}
-
-nav {
-  display:flex; justify-content:center; gap:32px;
-  background:var(--panel); backdrop-filter:blur(15px);
-  padding:16px 0; position:sticky; top:0; z-index:1000;
-}
-
-nav a { font-weight:600; color:var(--text); transition:0.3s; }
-nav a:hover { color:var(--premium-color); }
-
-section { max-width:1200px; margin:0 auto; padding:60px 20px; }
+section { display:none; max-width:1200px; margin:60px auto; padding:20px; }
+section.active { display:block; }
 
 .card { background:var(--panel); backdrop-filter:blur(20px); border-radius:20px; padding:24px; box-shadow:0 8px 20px rgba(0,0,0,0.6); margin-bottom:40px; }
 
-.stats { display:flex; justify-content:space-around; margin-bottom:24px; flex-wrap:wrap; }
+.stats { display:flex; justify-content:space-around; flex-wrap:wrap; margin-bottom:24px; }
 .stat h2 { font-size:2.5rem; margin-bottom:4px; }
 .stat span { color:var(--muted); font-size:0.9rem; }
 
@@ -73,11 +45,6 @@ li { display:flex; justify-content:space-between; align-items:center; padding:12
 li.completed { text-decoration:line-through; color:var(--muted); }
 .complete-btn { background:none; border:none; color:var(--accent); cursor:pointer; }
 
-.modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.85); justify-content:center; align-items:center; z-index:1000; }
-.modal-content { background:var(--panel); padding:40px; border-radius:24px; max-width:400px; width:90%; backdrop-filter:blur(20px); text-align:center; }
-.modal-content input { width:100%; padding:12px; margin:12px 0; border-radius:12px; border:none; background:#111; color:#fff; }
-.modal-content button { width:100%; margin-top:12px; }
-
 .premium-plan { display:flex; flex-wrap:wrap; gap:20px; justify-content:center; margin-top:40px; }
 .plan-card { background:var(--panel); padding:24px; border-radius:20px; width:250px; text-align:center; box-shadow:0 8px 20px rgba(0,0,0,0.6); transition:0.3s; }
 .plan-card:hover { transform:scale(1.05); }
@@ -86,35 +53,36 @@ li.completed { text-decoration:line-through; color:var(--muted); }
 .plan-card ul li { margin-bottom:8px; }
 .plan-card button { width:100%; background:var(--premium-color); color:#000; font-weight:700; }
 
+.modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.85); justify-content:center; align-items:center; z-index:1000; }
+.modal-content { background:var(--panel); padding:40px; border-radius:24px; max-width:400px; width:90%; backdrop-filter:blur(20px); text-align:center; }
+.modal-content input { width:100%; padding:12px; margin:12px 0; border-radius:12px; border:none; background:#111; color:#fff; }
+.modal-content button { width:100%; margin-top:12px; }
+
 footer { text-align:center; padding:40px; color:var(--muted); font-size:0.8rem; margin-top:40px; }
-
-.language-select { position:absolute; top:20px; left:40px; padding:8px 12px; border-radius:12px; border:none; background:#111; color:#fff; cursor:pointer; }
-
 </style>
 </head>
 <body>
 
 <header>
-  <h1 id="hero-title">ACSEND</h1>
-  <p id="hero-desc">Discipline measured globally. No motivation. No excuses. Only structure.</p>
-  <div class="header-buttons">
+  <h1>ACSEND</h1>
+  <div class="nav-links">
+    <a href="#" onclick="showSection('dashboard')">Dashboard</a>
+    <a href="#" onclick="showSection('history')">History</a>
+    <a href="#" onclick="showSection('settings')">Settings</a>
+    <a href="#" onclick="showSection('premium')">Premium</a>
+  </div>
+  <div>
+    <select class="language-select" onchange="changeLanguage(this.value)">
+      <option value="en">EN</option>
+      <option value="sv">SV</option>
+    </select>
     <button onclick="showModal('login')">Login</button>
     <button onclick="showModal('signup')">Sign Up</button>
   </div>
-  <select class="language-select" onchange="changeLanguage(this.value)">
-    <option value="en">EN</option>
-    <option value="sv">SV</option>
-  </select>
 </header>
 
-<nav>
-  <a href="#settings" id="nav-settings">Settings</a>
-  <a href="#dashboard">Dashboard</a>
-  <a href="#history">History</a>
-  <a href="#premium">Premium</a>
-</nav>
-
-<section id="dashboard">
+<!-- Sections -->
+<section id="dashboard" class="active">
   <div class="card">
     <div class="stats">
       <div class="stat"><h2 id="streak">0</h2><span id="streak-text">Day Streak</span></div>
@@ -154,7 +122,7 @@ footer { text-align:center; padding:40px; color:var(--muted); font-size:0.8rem; 
         <li>Daily streak tracking</li>
         <li>Access to dashboard</li>
       </ul>
-      <button onclick="buyPlan('Basic',19)">Buy 19 SEK</button>
+      <button onclick="getPremium('Basic')">Get Started</button>
     </div>
     <div class="plan-card">
       <h3>Pro</h3>
@@ -163,7 +131,7 @@ footer { text-align:center; padding:40px; color:var(--muted); font-size:0.8rem; 
         <li>History tracking</li>
         <li>Settings customization</li>
       </ul>
-      <button onclick="buyPlan('Pro',59)">Buy 59 SEK</button>
+      <button onclick="getPremium('Pro')">Get Started</button>
     </div>
     <div class="plan-card">
       <h3>Elite</h3>
@@ -172,15 +140,15 @@ footer { text-align:center; padding:40px; color:var(--muted); font-size:0.8rem; 
         <li>Full Analytics</li>
         <li>Priority support</li>
       </ul>
-      <button onclick="buyPlan('Elite',129)">Buy 129 SEK</button>
+      <button onclick="getPremium('Elite')">Get Started</button>
     </div>
   </div>
 </section>
 
-<!-- Login / Signup Modals -->
+<!-- Modals -->
 <div class="modal" id="login">
   <div class="modal-content">
-    <h2 id="login-title">Login</h2>
+    <h2>Login</h2>
     <input type="email" id="loginEmail" placeholder="Email">
     <input type="password" id="loginPass" placeholder="Password">
     <button onclick="login()">Login</button>
@@ -190,7 +158,7 @@ footer { text-align:center; padding:40px; color:var(--muted); font-size:0.8rem; 
 
 <div class="modal" id="signup">
   <div class="modal-content">
-    <h2 id="signup-title">Sign Up</h2>
+    <h2>Sign Up</h2>
     <input type="text" id="signupName" placeholder="Name">
     <input type="text" id="signupCountry" placeholder="Country">
     <input type="email" id="signupEmail" placeholder="Email">
@@ -200,56 +168,51 @@ footer { text-align:center; padding:40px; color:var(--muted); font-size:0.8rem; 
   </div>
 </div>
 
+<div class="modal" id="payModal">
+  <div class="modal-content">
+    <h2>Purchase Premium</h2>
+    <p id="planSelected"></p>
+    <button onclick="buy('card')">Pay with Card</button>
+    <button onclick="buy('apple')">Apple Pay</button>
+    <button onclick="buy('swish')">Swish</button>
+    <button onclick="closeModal('payModal')">Cancel</button>
+  </div>
+</div>
+
 <footer>© Acsend — Consistency Measured</footer>
 
 <script>
-let users = JSON.parse(localStorage.getItem('users'))||[];
+let users=JSON.parse(localStorage.getItem('users'))||[];
 let currentUser=null;
 let historyLog=[];
 
-// ==== Language ====
-const texts = {
-  en: {
-    hero: "Discipline measured globally. No motivation. No excuses. Only structure.",
-    streak: "Day Streak",
-    score: "Discipline Score",
-    goals: "Goals Today",
-    history: "Goal History",
-    settings: "Settings",
-    premium: "Premium Plans",
-    login: "Login",
-    signup: "Sign Up"
-  },
-  sv: {
-    hero: "Disciplin mäts globalt. Ingen motivation. Inga ursäkter. Endast struktur.",
-    streak: "Dagar i rad",
-    score: "Disciplinpoäng",
-    goals: "Dagens mål",
-    history: "Målhistorik",
-    settings: "Inställningar",
-    premium: "Premiumplaner",
-    login: "Logga in",
-    signup: "Registrera"
-  }
-};
+// Sections
+function showSection(id){
+  document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
 
+// Language
+let currentLang='en';
+const texts = {
+  en:{streak:"Day Streak",score:"Discipline Score",goals:"Goals Today",history:"Goal History",settings:"Settings",premium:"Premium Plans"},
+  sv:{streak:"Dagar i rad",score:"Disciplinpoäng",goals:"Dagens mål",history:"Målhistorik",settings:"Inställningar",premium:"Premiumplaner"}
+};
 function changeLanguage(lang){
-  document.getElementById('hero-desc').innerText=texts[lang].hero;
+  currentLang=lang;
   document.getElementById('streak-text').innerText=texts[lang].streak;
   document.getElementById('score-text').innerText=texts[lang].score;
   document.getElementById('goals-text').innerText=texts[lang].goals;
   document.getElementById('history-title').innerText=texts[lang].history;
   document.getElementById('settings-title').innerText=texts[lang].settings;
   document.getElementById('premium-title').innerText=texts[lang].premium;
-  document.getElementById('login-title').innerText=texts[lang].login;
-  document.getElementById('signup-title').innerText=texts[lang].signup;
 }
 
-// ==== Modal Logic ====
+// Modal
 function showModal(id){ document.getElementById(id).style.display='flex'; }
 function closeModal(id){ document.getElementById(id).style.display='none'; }
 
-// ==== Users ====
+// Users
 function signup(){
   const name=document.getElementById('signupName').value;
   const country=document.getElementById('signupCountry').value;
@@ -269,17 +232,11 @@ function login(){
   if(!u) return alert('Wrong credentials');
   currentUser=u;
   closeModal('login');
-  showDashboard();
+  showSection('dashboard');
+  render();
 }
 
-function showDashboard(){ document.getElementById('dashboard').scrollIntoView({behavior:'smooth'}); render(); }
-
-function save(){
-  const idx=users.findIndex(u=>u.email===currentUser.email);
-  users[idx]=currentUser;
-  localStorage.setItem('users',JSON.stringify(users));
-}
-
+// Dashboard / Goals
 function addGoal(){
   const input=document.getElementById('goalInput');
   if(!input.value) return;
@@ -289,32 +246,36 @@ function addGoal(){
   input.value='';
   render();
 }
-
-function toggleGoal(index){
-  currentUser.goals[index].completed=!currentUser.goals[index].completed;
-  currentUser.score+=currentUser.goals[index].completed?2:-2;
-  if(currentUser.goals[index].completed) historyLog.push(currentUser.goals[index].text);
-  save(); render();
+function toggleGoal(i){
+  currentUser.goals[i].completed=!currentUser.goals[i].completed;
+  currentUser.score+=currentUser.goals[i].completed?2:-2;
+  if(currentUser.goals[i].completed) historyLog.push(currentUser.goals[i].text);
+  save();
+  render();
 }
-
 function render(){
   if(!currentUser) return;
   const list=document.getElementById('goalList'); list.innerHTML='';
-  currentUser.goals.forEach((goal,i)=>{
+  currentUser.goals.forEach((g,i)=>{
     const li=document.createElement('li');
-    li.className=goal.completed?'completed':'';
-    li.innerHTML=`${goal.text} <button class="complete-btn" onclick="toggleGoal(${i})">${goal.completed?'Undo':'Done'}</button>`;
+    li.className=g.completed?'completed':'';
+    li.innerHTML=`${g.text} <button class="complete-btn" onclick="toggleGoal(${i})">${g.completed?'Undo':'Done'}</button>`;
     list.appendChild(li);
   });
   document.getElementById('streak').innerText=currentUser.streak;
   document.getElementById('score').innerText=currentUser.score;
   document.getElementById('goalsDone').innerText=currentUser.goals.filter(g=>g.completed).length;
 
-  // History
-  const hist=document.getElementById('historyList');
-  hist.innerHTML=historyLog.map(h=>`<div>${h}</div>`).join('');
+  document.getElementById('historyList').innerHTML=historyLog.map(h=>`<div>${h}</div>`).join('');
 }
 
+function save(){ 
+  const idx=users.findIndex(u=>u.email===currentUser.email);
+  users[idx]=currentUser;
+  localStorage.setItem('users',JSON.stringify(users));
+}
+
+// Settings
 function saveSettings(){
   currentUser.name=document.getElementById('setName').value;
   currentUser.country=document.getElementById('setCountry').value;
@@ -323,13 +284,20 @@ function saveSettings(){
   alert('Settings saved!');
 }
 
-function buyPlan(plan,price){
-  currentUser.premium=plan;
-  save();
-  alert(`${plan} plan activated for ${price} SEK!`);
-  render();
+// Premium
+let selectedPlan='';
+function getPremium(plan){
+  selectedPlan=plan;
+  document.getElementById('planSelected').innerText=`Selected Plan: ${plan}`;
+  showModal('payModal');
 }
-
+function buy(method){
+  const price=currentLang==='sv'?selectedPlan==='Basic'?19:selectedPlan==='Pro'?59:129 : selectedPlan==='Basic'?2:5:10;
+  currentUser.premium=selectedPlan;
+  save();
+  alert(`Paid ${price} ${currentLang==='sv'?'SEK':'USD'} with ${method}! Plan activated.`);
+  closeModal('payModal');
+}
 </script>
 </body>
 </html>
