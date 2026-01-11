@@ -104,3 +104,153 @@ function updateLanguage(){
 
 </body>
 </html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Settings • Acsend</title>
+<style>
+:root {
+  --bg-color: #0b0b0c;
+  --primary-color: #00f2ea;
+  --secondary-color: #a855f7;
+  --text-color: #fff;
+  --font-family: "Inter", sans-serif;
+}
+
+/* Wrapper */
+.language-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  background-color: rgba(24,24,26,0.85);
+  padding: 1.5rem 2rem;
+  border-radius: 1rem;
+  max-width: 250px;
+  margin: 20px auto;
+  color: var(--text-color);
+  font-family: var(--font-family);
+}
+
+/* Header Text */
+.language-wrapper .header {
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+/* Radio Container */
+.glitch-radio-container {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  position: relative;
+}
+
+/* Hidden Radio Input */
+.glitch-radio-container input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* Circle */
+.radio-circle {
+  width: 1.5em;
+  height: 1.5em;
+  border: 2px solid var(--primary-color);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+/* Dot */
+.radio-dot {
+  width: 60%;
+  height: 60%;
+  background-color: var(--primary-color);
+  border-radius: 50%;
+  transform: scale(0);
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+/* Label */
+.radio-label {
+  color: var(--text-color);
+  font-weight: 500;
+  text-transform: none;
+  font-size: 0.95rem;
+}
+
+/* Checked */
+.glitch-radio-container input:checked + .radio-circle .radio-dot {
+  transform: scale(1);
+  opacity: 1;
+}
+
+.glitch-radio-container input:checked ~ .radio-label {
+  color: var(--primary-color);
+}
+
+/* Hover */
+.glitch-radio-container:hover .radio-circle {
+  box-shadow: 0 0 8px var(--primary-color);
+}
+
+/* Header */
+h2 {text-align:center; font-weight:700; margin-bottom:1rem; color:var(--primary-color);}
+</style>
+</head>
+<body style="background: linear-gradient(135deg,#0b0b0c,#1a1a1f); color:#fff; font-family:'Inter', sans-serif;">
+
+<div class="language-wrapper">
+  <div class="header">Språk:</div>
+
+  <div class="glitch-radio-container">
+    <input type="radio" id="lang-en" name="language" value="en">
+    <div class="radio-circle"><div class="radio-dot"></div></div>
+    <span class="radio-label">English</span>
+  </div>
+
+  <div class="glitch-radio-container">
+    <input type="radio" id="lang-se" name="language" value="se">
+    <div class="radio-circle"><div class="radio-dot"></div></div>
+    <span class="radio-label">Svenska</span>
+  </div>
+</div>
+
+<script>
+// Hämta alla språk-radio
+const radios = document.querySelectorAll('input[name="language"]');
+
+// Standardtext innan val
+let selectedLanguage = null;
+
+// Lyssna på ändring
+radios.forEach(radio => {
+  radio.addEventListener('change', () => {
+    selectedLanguage = radio.value;
+    applyLanguage(selectedLanguage);
+  });
+});
+
+// Funktion för att ändra text på hela sidan (exempel)
+function applyLanguage(lang){
+  if(lang === 'se'){
+    document.documentElement.lang = 'sv';
+    alert("Språket är nu Svenska"); // här kan du ändra alla texts på sidan
+  } else if(lang === 'en'){
+    document.documentElement.lang = 'en';
+    alert("Language set to English"); // här kan du ändra alla texts på sidan
+  }
+}
+</script>
+
+</body>
+</html>
