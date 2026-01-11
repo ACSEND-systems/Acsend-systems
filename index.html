@@ -28,7 +28,7 @@ header h1{font-size:2rem;font-weight:800;letter-spacing:1px;}
 position:relative;
 text-align:center;
 padding:100px 20px 60px;
-background: url('https://images.unsplash.com/photo-1612831455540-13b91db2b2f5?auto=format&fit=crop&w=1950&q=80') center/cover no-repeat;
+background: linear-gradient(rgba(11,11,12,0.7), rgba(11,11,12,0.7)), url('https://images.unsplash.com/photo-1605902711622-cfb43c443cb0?auto=format&fit=crop&w=1950&q=80') center/cover no-repeat;
 color:var(--text);
 }
 .hero::after{
@@ -53,21 +53,6 @@ white-space:nowrap;
 .panel h3{font-size:1.8rem;margin-bottom:8px;color:var(--accent);}
 .panel .value{font-size:3rem;font-weight:700;}
 .panel p{font-size:0.95rem;color:var(--muted);}
-
-/* GOALS DISPLAY */
-.goals-display{
-padding:28px;
-background:var(--panel);
-backdrop-filter:blur(20px);
-border-radius:24px;
-margin:24px auto;
-max-width:640px;
-box-shadow:0 12px 25px var(--shadow);
-}
-.goals-display h3{font-size:1.5rem;margin-bottom:14px;}
-.goal-item{background:#111;padding:12px 16px;border-radius:12px;margin-bottom:10px;color:#fff;display:flex;justify-content:space-between;align-items:center;}
-.goal-item button{background:var(--accent);border:none;padding:6px 12px;border-radius:8px;cursor:pointer;font-weight:600;transition:0.3s;}
-.goal-item button:hover{transform:scale(1.05);}
 
 /* ABOUT */
 .about{padding:80px 24px;text-align:center;background:rgba(255,255,255,0.02);border-radius:24px;margin:40px auto;max-width:1000px;line-height:1.8;box-shadow:0 12px 25px var(--shadow);}
@@ -121,13 +106,6 @@ footer{text-align:center;padding:36px;color:var(--muted);font-size:0.85rem;}
 </div>
 </div>
 
-<section class="goals-display">
-<h3>Your Goals</h3>
-<div id="goalList">
-<!-- Goals will appear here -->
-</div>
-</section>
-
 <section class="about">
 <h2>What Acsend Systems Does</h2>
 <p>
@@ -168,31 +146,10 @@ document.getElementById('panel-3-title').innerText=langTexts[lang].panel3;
 document.querySelector('.about p').innerText=langTexts[lang].aboutText;
 }
 
-// GOALS
-let userGoals = ["Sample Goal"]; // Initial goal for demonstration
-function renderGoals(){
-const listContainer=document.getElementById('goalList');
-listContainer.innerHTML="";
-userGoals.forEach((goal,index)=>{
-const goalDiv=document.createElement('div');
-goalDiv.className="goal-item";
-goalDiv.innerHTML=`<span>${goal}</span>${index===0 ? '<button onclick="addPremiumGoal()">Add Goal</button>' : ''}`;
-listContainer.appendChild(goalDiv);
-});
-document.getElementById('todaysGoals').innerText=userGoals.length;
-document.getElementById('dailyStreak').innerText=userGoals.length; // Example
-document.getElementById('disciplineScore').innerText=userGoals.length*10;
-}
-function addPremiumGoal(){
-if(userGoals.length<2){ // Basic premium allows 1 extra goal
-userGoals.push("New Premium Goal");
-renderGoals();
-}else{
-alert("Upgrade to Pro or Elite to add more goals!");
-}
-}
-
-renderGoals();
+// Example dynamic values
+document.getElementById('dailyStreak').innerText=5;
+document.getElementById('todaysGoals').innerText=3;
+document.getElementById('disciplineScore').innerText=150;
 </script>
 
 </body>
