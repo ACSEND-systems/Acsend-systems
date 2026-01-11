@@ -1,1 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Premium Plans • Acsend</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0b0b0c;
+  --text:#fff;
+  --panel:rgba(24,24,26,0.85);
+  --accent:#FFD700;
+}
+
+/* Body och bakgrund */
+body{
+  margin:0;
+  font-family:'Inter',sans-serif;
+  background: linear-gradient(135deg, #0b0b0c, #1a1a1f);
+  color:var(--text);
+}
+
+/* Header */
+header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:20px 40px;
+  background:var(--panel);
+  backdrop-filter:blur(15px);
+}
+header h1{font-weight:800;}
+.nav span{margin-left:20px;cursor:pointer;}
+
+/* Premium Plan Container */
+.plan-chooser {
+  background-color: rgba(30, 30, 35, 0.9); /* Mörk bakgrund istället för vit */
+  max-width: 400px;
+  border-radius: 20px;
+  padding: 25px;
+  color: #fff;
+  box-shadow: 0px 20px 40px rgba(0,0,0,0.7);
+  margin: 50px auto;
+  backdrop-filter: blur(10px);
+}
+
+.plan-chooser .title {
+  text-align:center;
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--accent);
+}
+
+.plan-chooser .desc {
+  text-align:center;
+  margin-top:0.5rem;
+  font-size: 1rem;
+  color: #aaa;
+}
+
+.plan-option {
+  margin-top: 1rem;
+  margin-bottom: 15px;
+}
+
+.plan-option label {
+  cursor: pointer;
+  overflow: hidden;
+  border: 2px solid rgba(100,100,120,0.4);
+  border-radius: 1rem;
+  background-color: rgba(40,40,45,0.8);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1rem;
+  margin: 10px 0;
+  transition: all .15s ease;
+}
+
+.plan-option label .plan-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.plan-cost {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.plan-name {
+  font-size: 0.9rem;
+  color: #ccc;
+}
+
+.reduction {
+  display: inline-block;
+  border-radius: 9999px;
+  border: 1px solid #16a34a;
+  background-color: rgba(20,200,50,0.2);
+  padding: 0.2rem .4rem;
+  font-size: 0.675rem;
+  font-weight: 600;
+  color: #16a34a;
+}
+
+.plan-option input:checked + label {
+  border-color: #2563eb;
+  background-color: rgba(37,99,235,0.15);
+}
+
+.choose-btn {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 1rem;
+  background-color: #2563eb;
+  padding: 1rem 3rem;
+  font-weight: 600;
+  color: #fff;
+  cursor:pointer;
+  transition: all .15s ease;
+}
+
+.choose-btn:hover {opacity:0.9;}
+
+.plan-option input {display: none;}
+</style>
+</head>
+<body>
+
+<header>
+<h1>Acsend Premium</h1>
+<div class="nav">
+<span onclick="goDashboard()">Dashboard</span>
+<span onclick="goSettings()">Settings</span>
+</div>
+</header>
+
+<div class="plan-chooser">
+<h2 class="title">Choose Your Plan</h2>
+<p class="desc">Unlock more goals and features</p>
+
+<div class="plan-option">
+  <input type="radio" id="basic" name="plan" checked>
+  <label for="basic">
+    <div class="plan-info">
+      <span class="plan-name">Basic</span>
+      <span class="reduction">5 Goals/day</span>
+    </div>
+    <span class="plan-cost">19 SEK</span>
+  </label>
+</div>
+
+<div class="plan-option">
+  <input type="radio" id="pro" name="plan">
+  <label for="pro">
+    <div class="plan-info">
+      <span class="plan-name">Pro</span>
+      <span class="reduction">20 Goals/day, History Tracking</span>
+    </div>
+    <span class="plan-cost">59 SEK</span>
+  </label>
+</div>
+
+<div class="plan-option">
+  <input type="radio" id="elite" name="plan">
+  <label for="elite">
+    <div class="plan-info">
+      <span class="plan-name">Elite</span>
+      <span class="reduction">Unlimited Goals, Full Analytics, Priority Support</span>
+    </div>
+    <span class="plan-cost">129 SEK</span>
+  </label>
+</div>
+
+<button class="choose-btn" onclick="buyPlan()">Get Started</button>
+</div>
+
+<script>
+function goDashboard(){window.location.href='dashboard.html';}
+function goSettings(){window.location.href='settings.html';}
+
+// Exempel-funktion för köp
+function buyPlan(){
+  const selected = document.querySelector('input[name="plan"]:checked').id;
+  alert("You selected "+selected+" plan. Redirecting to payment...");
+  // Här kan du lägga in Apple Pay eller Stripe/PayPal integration
+}
+</script>
+
+</body>
+</html>
 
