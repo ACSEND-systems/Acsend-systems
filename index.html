@@ -1,239 +1,217 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Acsend — Discipline System</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Acsend — Discipline System</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0b0b0c;
+    --panel: rgba(20,20,22,0.85);
+    --text: #fff;
+    --muted: #8a8a8f;
+    --accent: #fff;
+    --premium: #FFD700;
+  }
 
-  <style>
-    :root {
-      --bg: #0b0b0c;
-      --panel: #141416;
-      --text: #ffffff;
-      --muted: #8a8a8f;
-      --accent: #ffffff;
-      --danger: #ff4d4d;
-    }
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
 
-    * {
-      box-sizing: border-box;
-      font-family: -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
-    }
+  body { background: var(--bg); color: var(--text); min-height:100vh; overflow-x:hidden; }
 
-    body {
-      margin: 0;
-      background: var(--bg);
-      color: var(--text);
-    }
+  a { text-decoration:none; color:inherit; }
 
-    header {
-      padding: 80px 24px 40px;
-      text-align: center;
-    }
+  button { cursor:pointer; border:none; border-radius:12px; padding:12px 24px; font-weight:600; transition:all 0.3s ease; }
+  button:hover { transform: scale(1.05); }
 
-    header h1 {
-      font-size: 3rem;
-      letter-spacing: 2px;
-      margin-bottom: 12px;
-    }
+  /* Hero */
+  header {
+    text-align:center;
+    padding:100px 20px 80px;
+    background: linear-gradient(135deg, #111, #000);
+  }
 
-    header p {
-      color: var(--muted);
-      max-width: 520px;
-      margin: 0 auto;
-    }
+  header h1 { font-size:4rem; font-weight:800; margin-bottom:16px; letter-spacing:3px; }
+  header p { font-size:1.25rem; color:var(--muted); margin-bottom:32px; }
 
-    main {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 24px;
-      display: grid;
-      gap: 24px;
-    }
+  .hero-buttons button { background:var(--accent); color:#000; margin:0 12px; }
 
-    .card {
-      background: var(--panel);
-      border-radius: 16px;
-      padding: 24px;
-    }
+  /* Dashboard */
+  .dashboard { display:none; max-width:1000px; margin:-60px auto 0; padding:40px 24px; display:grid; gap:32px; grid-template-columns:1fr 1fr; }
+  .card {
+    background:var(--panel); backdrop-filter: blur(20px); border-radius:20px; padding:24px;
+    box-shadow:0 8px 20px rgba(0,0,0,0.6);
+  }
 
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
-      text-align: center;
-    }
+  .stats { display:flex; justify-content:space-around; margin-bottom:24px; }
+  .stat h2 { font-size:2.5rem; margin-bottom:4px; }
+  .stat span { color:var(--muted); font-size:0.9rem; }
 
-    .stat h2 {
-      margin: 0;
-      font-size: 2rem;
-    }
+  .goals input { width:100%; padding:14px; border-radius:12px; border:none; margin-bottom:12px; background:#1c1c1f; color:var(--text); }
+  .goals button { width:100%; background:var(--accent); color:#000; }
 
-    .stat span {
-      color: var(--muted);
-      font-size: 0.9rem;
-    }
+  ul { list-style:none; padding:0; margin-top:16px; }
+  li { display:flex; justify-content:space-between; align-items:center; padding:12px; border-bottom:1px solid #222; }
+  li.completed { text-decoration:line-through; color:var(--muted); }
+  .complete-btn { background:none; border:none; color:var(--accent); cursor:pointer; }
 
-    .goals input {
-      width: 100%;
-      padding: 14px;
-      border-radius: 12px;
-      border: none;
-      background: #1c1c1f;
-      color: var(--text);
-      margin-bottom: 12px;
-    }
+  /* Modals */
+  .modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.85); justify-content:center; align-items:center; z-index:1000; }
+  .modal-content {
+    background:var(--panel); padding:40px; border-radius:24px; max-width:400px; width:90%; backdrop-filter:blur(20px); text-align:center;
+  }
+  .modal-content input { width:100%; padding:12px; margin:12px 0; border-radius:12px; border:none; background:#111; color:#fff; }
+  .modal-content button { width:100%; margin-top:12px; }
 
-    .goals button {
-      width: 100%;
-      padding: 14px;
-      border-radius: 12px;
-      border: none;
-      background: var(--accent);
-      color: #000;
-      font-weight: 600;
-      cursor: pointer;
-    }
+  .premium-btn { background:var(--premium); color:#000; font-weight:700; margin-top:16px; }
 
-    ul {
-      list-style: none;
-      padding: 0;
-      margin-top: 16px;
-    }
+  footer { text-align:center; padding:40px; color:var(--muted); font-size:0.8rem; margin-top:40px; }
 
-    li {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 12px;
-      border-bottom: 1px solid #222;
-    }
-
-    li.completed {
-      text-decoration: line-through;
-      color: var(--muted);
-    }
-
-    .complete-btn {
-      background: none;
-      border: none;
-      color: var(--accent);
-      cursor: pointer;
-      font-size: 1rem;
-    }
-
-    footer {
-      text-align: center;
-      padding: 40px;
-      color: var(--muted);
-      font-size: 0.8rem;
-    }
-  </style>
+</style>
 </head>
 <body>
 
 <header>
   <h1>ACSEND</h1>
-  <p>
-    A discipline system that measures consistency through daily action.
-    No motivation. No excuses. Only structure.
-  </p>
+  <p>Discipline measured globally. No motivation. No excuses. Only structure.</p>
+  <div class="hero-buttons">
+    <button onclick="showModal('login')">Login</button>
+    <button onclick="showModal('signup')">Sign Up</button>
+  </div>
 </header>
 
-<main>
-  <div class="card stats">
-    <div class="stat">
-      <h2 id="streak">0</h2>
-      <span>Day Streak</span>
+<div class="dashboard">
+  <div class="card">
+    <div class="stats">
+      <div class="stat"><h2 id="streak">0</h2><span>Day Streak</span></div>
+      <div class="stat"><h2 id="score">0</h2><span>Discipline Score</span></div>
+      <div class="stat"><h2 id="goalsDone">0</h2><span>Goals Today</span></div>
     </div>
-    <div class="stat">
-      <h2 id="score">0</h2>
-      <span>Discipline Score</span>
+    <div class="goals">
+      <input type="text" id="goalInput" placeholder="Define today's goal">
+      <button onclick="addGoal()">Add Goal</button>
+      <ul id="goalList"></ul>
     </div>
-    <div class="stat">
-      <h2 id="goalsDone">0</h2>
-      <span>Goals Today</span>
-    </div>
+    <button class="premium-btn" onclick="payPremium()">Upgrade to Premium (Apple Pay)</button>
   </div>
+</div>
 
-  <div class="card goals">
-    <input type="text" id="goalInput" placeholder="Define today's goal"/>
-    <button onclick="addGoal()">Add Goal</button>
-
-    <ul id="goalList"></ul>
+<!-- Modals -->
+<div class="modal" id="login">
+  <div class="modal-content">
+    <h2>Login</h2>
+    <input type="text" id="loginUser" placeholder="Username">
+    <input type="password" id="loginPass" placeholder="Password">
+    <button onclick="login()">Login</button>
+    <button onclick="closeModal('login')">Cancel</button>
   </div>
-</main>
+</div>
 
-<footer>
-  © Acsend — Consistency Measured
-</footer>
+<div class="modal" id="signup">
+  <div class="modal-content">
+    <h2>Sign Up</h2>
+    <input type="text" id="signupUser" placeholder="Username">
+    <input type="password" id="signupPass" placeholder="Password">
+    <button onclick="signup()">Sign Up</button>
+    <button onclick="closeModal('signup')">Cancel</button>
+  </div>
+</div>
+
+<footer>© Acsend — Consistency Measured</footer>
 
 <script>
-  let goals = JSON.parse(localStorage.getItem("goals")) || [];
-  let streak = Number(localStorage.getItem("streak")) || 0;
-  let score = Number(localStorage.getItem("score")) || 0;
-  let lastDate = localStorage.getItem("lastDate");
+  // ====== Modal Logic ======
+  function showModal(id){ document.getElementById(id).style.display='flex'; }
+  function closeModal(id){ document.getElementById(id).style.display='none'; }
 
-  const today = new Date().toDateString();
+  // ====== Users ======
+  let users = JSON.parse(localStorage.getItem('users'))||[];
+  let currentUser=null;
 
-  if (lastDate !== today) {
-    if (goals.every(g => g.completed) && goals.length > 0) {
-      streak++;
-      score += 10;
-    } else if (goals.length > 0) {
-      streak = 0;
-      score -= 5;
-    }
-    goals = [];
-    localStorage.setItem("lastDate", today);
+  function signup(){
+    const user=document.getElementById('signupUser').value;
+    const pass=document.getElementById('signupPass').value;
+    if(!user||!pass)return alert('Fill all fields');
+    if(users.find(u=>u.username===user))return alert('User exists');
+    users.push({username:user,password:pass,streak:0,score:0,goals:[],lastLogin:null,premium:false});
+    localStorage.setItem('users',JSON.stringify(users));
+    alert('Account created!'); closeModal('signup');
   }
 
-  function save() {
-    localStorage.setItem("goals", JSON.stringify(goals));
-    localStorage.setItem("streak", streak);
-    localStorage.setItem("score", score);
+  function login(){
+    const user=document.getElementById('loginUser').value;
+    const pass=document.getElementById('loginPass').value;
+    const u=users.find(u=>u.username===user && u.password===pass);
+    if(!u)return alert('Wrong credentials');
+    currentUser=u;
+    closeModal('login');
+    checkDailyReset();
+    showDashboard();
   }
 
-  function addGoal() {
-    const input = document.getElementById("goalInput");
-    if (!input.value) return;
-    goals.push({ text: input.value, completed: false });
-    input.value = "";
+  // ====== Dashboard ======
+  function showDashboard(){
+    document.querySelector('.dashboard').style.display='grid';
     render();
   }
 
-  function toggleGoal(index) {
-    goals[index].completed = !goals[index].completed;
-    score += goals[index].completed ? 2 : -2;
+  function save(){
+    const idx=users.findIndex(u=>u.username===currentUser.username);
+    users[idx]=currentUser;
+    localStorage.setItem('users',JSON.stringify(users));
+  }
+
+  // ====== Goals ======
+  function addGoal(){
+    const input=document.getElementById('goalInput');
+    if(!input.value)return;
+    const maxGoals=currentUser.premium?20:5;
+    if(currentUser.goals.length>=maxGoals){ alert('Upgrade to premium for more goals'); return; }
+    currentUser.goals.push({text:input.value,completed:false});
+    input.value='';
+    render();
+  }
+
+  function toggleGoal(index){
+    currentUser.goals[index].completed=!currentUser.goals[index].completed;
+    currentUser.score+=currentUser.goals[index].completed?2:-2;
     save();
     render();
   }
 
-  function render() {
-    const list = document.getElementById("goalList");
-    list.innerHTML = "";
-
-    goals.forEach((goal, i) => {
-      const li = document.createElement("li");
-      li.className = goal.completed ? "completed" : "";
-      li.innerHTML = `
-        ${goal.text}
-        <button class="complete-btn" onclick="toggleGoal(${i})">
-          ${goal.completed ? "Undo" : "Done"}
-        </button>
-      `;
+  function render(){
+    const list=document.getElementById('goalList'); list.innerHTML='';
+    currentUser.goals.forEach((goal,i)=>{
+      const li=document.createElement('li');
+      li.className=goal.completed?'completed':'';
+      li.innerHTML=`${goal.text} <button class="complete-btn" onclick="toggleGoal(${i})">${goal.completed?'Undo':'Done'}</button>`;
       list.appendChild(li);
     });
-
-    document.getElementById("streak").innerText = streak;
-    document.getElementById("score").innerText = score;
-    document.getElementById("goalsDone").innerText =
-      goals.filter(g => g.completed).length;
-
+    document.getElementById('streak').innerText=currentUser.streak;
+    document.getElementById('score').innerText=currentUser.score;
+    document.getElementById('goalsDone').innerText=currentUser.goals.filter(g=>g.completed).length;
     save();
   }
 
-  render();
+  // ====== Premium Payment (Simulated Apple Pay) ======
+  function payPremium(){
+    if(currentUser.premium){ alert('Already Premium!'); return; }
+    const proceed=confirm('Simulate Apple Pay: Upgrade to Premium for 20 goals/day?');
+    if(proceed){ currentUser.premium=true; save(); alert('Premium Activated!'); }
+  }
+
+  // ====== Daily Streak Reset by Timezone ======
+  function checkDailyReset(){
+    const now=new Date();
+    const last=currentUser.lastLogin?new Date(currentUser.lastLogin):null;
+    if(!last || now.getUTCDate()!==last.getUTCDate() || now.getUTCMonth()!==last.getUTCMonth() || now.getUTCFullYear()!==last.getUTCFullYear()){
+      if(last && currentUser.goals.every(g=>g.completed)) currentUser.streak+=1;
+      else if(last) currentUser.streak=0;
+      currentUser.goals=[];
+      currentUser.lastLogin=now.toISOString();
+      save();
+    }
+  }
 </script>
 
 </body>
