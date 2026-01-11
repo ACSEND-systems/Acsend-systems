@@ -1,103 +1,337 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Acsend — Dashboard</title>
+<meta charset="UTF‑8">
+<meta name="viewport" content="width=device‑width, initial‑scale=1.0">
+<title>Acsend Systems • Dashboard</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 <style>
-:root { --bg:#0b0b0c; --panel:rgba(20,20,22,0.85); --text:#fff; --accent:#FFD700; --muted:#8a8a8f;}
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif;}
-body{background:var(--bg);color:var(--text);}
-header{display:flex;justify-content:space-between;align-items:center;padding:20px 40px;background:var(--panel);backdrop-filter:blur(15px);}
-header h1{font-weight:800;}
-.nav-links a{margin-left:20px;color:var(--text);text-decoration:none;font-weight:600;}
-.nav-links a:hover{color:var(--accent);}
-.language-select{padding:6px 10px;border-radius:12px;border:none;background:#111;color:#fff;}
-section{max-width:1200px;margin:60px auto;padding:20px;}
-.card{background:var(--panel);backdrop-filter:blur(15px);border-radius:20px;padding:24px;box-shadow:0 8px 20px rgba(0,0,0,0.6);}
-.stats{display:flex;justify-content:space-around;margin-bottom:24px;}
-.stat h2{font-size:2.5rem;margin-bottom:4px;}
-.stat span{color:var(--muted);}
-.goals input{width:100%;padding:12px;border-radius:12px;border:none;margin-bottom:12px;background:#111;color:#fff;}
-.goals button{width:100%;padding:12px;background:var(--accent);color:#000;font-weight:700;border-radius:12px;border:none;cursor:pointer;}
-button:hover{transform:scale(1.05);}
-footer{text-align:center;padding:40px;color:var(--muted);}
+
+/* ================= GLOBAL STYLES ================= */
+:root {
+  --bg: #0b0b0c;
+  --text: #ffffff;
+  --muted: #8a8a8f;
+  --accent: #FFD700;
+  --panel: rgba(24,24,26,0.85);
+  --shadow: rgba(0,0,0,0.6);
+}
+
+* {
+  box‑sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font‑family: 'Inter', sans‑serif;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+/* ================= HEADER / NAV ================= */
+header {
+  display: flex;
+  justify-content: space-between;
+  padding: 24px 40px;
+  align-items: center;
+  background: var(--panel);
+  backdrop-filter: blur(20px);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+header h1 {
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+.nav {
+  display: flex;
+  gap: 24px;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.nav span {
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.nav span:hover {
+  color: var(--accent);
+}
+
+.language {
+  margin‑left: 20px;
+  padding: 6px 10px;
+  border-radius: 10px;
+  border: none;
+  background: #111;
+  color: #fff;
+  cursor: pointer;
+}
+
+/* ================= HERO ================= */
+.hero {
+  text-align: center;
+  padding: 120px 20px 60px;
+  background: url('https://images.pexels.com/photos/933964/pexels-photo‑933964.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260') center/cover no‑repeat;
+  position: relative;
+  color: var(--text);
+}
+
+.hero::after {
+  content:"";
+  position:absolute;
+  inset:0;
+  background: rgba(0,0,0,0.65);
+}
+
+.hero h2 {
+  position: relative;
+  font‑size: 4rem;
+  font‑weight: 800;
+  margin‑bottom: 12px;
+  letter‑spacing: 2px;
+}
+
+.hero p {
+  position: relative;
+  font‑size: 1.2rem;
+  max‑width: 600px;
+  margin: auto;
+  color: var(--muted);
+}
+
+/* ================= DASH PANELS ================= */
+.panels {
+  display: grid;
+  grid‑template‑columns: repeat(auto‑fit, minmax(240px, 1fr));
+  gap: 24px;
+  padding: 40px 24px;
+}
+
+.panel {
+  background: var(--panel);
+  padding: 28px 20px;
+  border‑radius: 20px;
+  box‑shadow: 0px 8px 20px var(--shadow);
+  text‑align: center;
+}
+
+.panel h3 {
+  font‑size: 1.6rem;
+  margin‑bottom: 8px;
+  color: var(--accent);
+}
+
+.panel p {
+  font‑size: 0.95rem;
+  color: var(--muted);
+  margin‑bottom: 12px;
+}
+
+.panel .value {
+  font‑size: 2.8rem;
+  font‑weight: 700;
+}
+
+/* ================= GOAL SELECTION ================= */
+.goal‑selector {
+  padding: 24px;
+  background: var(--panel);
+  backdrop‑filter: blur(20px);
+  border‑radius: 20px;
+  margin: 24px;
+  max‑width: 600px;
+  margin: auto;
+  text‑align: center;
+  box‑shadow: 0 8px 20px var(--shadow);
+}
+
+.goal‑selector h3 {
+  font‑size: 1.5rem;
+  margin‑bottom: 14px;
+}
+
+.goal‑selector select {
+  width: 100%;
+  padding: 12px;
+  border:none;
+  border‑radius:12px;
+  margin‑bottom: 12px;
+  background:#111;
+  color:#fff;
+}
+
+.goal‑selector button {
+  width: 100%;
+  background: var(--accent);
+  color:#000;
+  font‑weight:700;
+  border:none;
+  padding:12px;
+  border‑radius:12px;
+  cursor:pointer;
+}
+
+/* ================= “WHAT WE ARE ABOUT” ================= */
+.about {
+  padding: 60px 24px;
+  text‑align: center;
+}
+
+.about h2 {
+  font‑size: 2.2rem;
+  margin‑bottom: 12px;
+}
+
+.about p {
+  font‑size: 1.1rem;
+  max‑width: 800px;
+  margin: auto;
+  color: var(--muted);
+}
+
+/* ================= FOOTER ================= */
+footer {
+  text‑align: center;
+  padding: 36px;
+  color: var(--muted);
+  font‑size: 0.85rem;
+}
+
 </style>
 </head>
 <body>
+
+<!-- HEADER -->
 <header>
-  <h1>ACSEND</h1>
-  <div>
-    <a href="dashboard.html">Dashboard</a>
-    <a href="history.html">History</a>
-    <a href="settings.html">Settings</a>
-    <a href="premium.html">Premium</a>
-    <select class="language-select" onchange="changeLanguage(this.value)">
+  <h1>Acsend Systems</h1>
+  <div class="nav">
+    <span onclick="location.href='dashboard.html'">Dashboard</span>
+    <span onclick="location.href='history.html'">History</span>
+    <span onclick="location.href='settings.html'">Settings</span>
+    <span onclick="location.href='premium.html'">Premium</span>
+    <select class="language" onchange="changeLanguage(this.value)">
       <option value="en">EN</option>
       <option value="sv">SV</option>
     </select>
   </div>
 </header>
 
-<section>
-  <div class="card">
-    <div class="stats">
-      <div class="stat"><h2 id="streak">0</h2><span id="streak-text">Day Streak</span></div>
-      <div class="stat"><h2 id="score">0</h2><span id="score-text">Discipline Score</span></div>
-      <div class="stat"><h2 id="goalsDone">0</h2><span id="goals-text">Goals Today</span></div>
-    </div>
-    <div class="goals">
-      <input type="text" id="goalInput" placeholder="Define today's goal">
-      <button onclick="addGoal()">Add Goal</button>
-      <ul id="goalList"></ul>
-    </div>
-    <button style="margin-top:20px;width:100%;background:var(--accent);" onclick="goPremium()">
-      <span id="premiumCTA">Get Started with Premium</span>
-    </button>
+<!-- HERO -->
+<div class="hero">
+  <h2>Acsend Systems</h2>
+  <p>Discipline measured globally. No motivation. No excuses. Only structure.</p>
+</div>
+
+<!-- PANELS -->
+<div class="panels">
+  <div class="panel">
+    <h3 id="panel‑1‑title">DAILY STREAK</h3>
+    <div class="value" id="dailyStreak">0</div>
+    <p id="panel‑1‑desc">Longest consistent run of completed goals.</p>
   </div>
+
+  <div class="panel">
+    <h3 id="panel‑2‑title">TODAY'S GOALS</h3>
+    <div class="value" id="todaysGoals">0</div>
+    <p id="panel‑2‑desc">Number of goals completed today.</p>
+  </div>
+
+  <div class="panel">
+    <h3 id="panel‑3‑title">DISCIPLINE SCORE</h3>
+    <div class="value" id="disciplineScore">0</div>
+    <p id="panel‑3‑desc">Total points earned from consistency.</p>
+  </div>
+</div>
+
+<!-- SELECT FROM PRESET GOALS -->
+<div class="goal‑selector">
+  <h3 id="goal‑select‑title">Choose your goals for today</h3>
+  <select id="goalChoices">
+    <option value="Meditate 10 min">Meditate 10 min</option>
+    <option value="Read 20 pages">Read 20 pages</option>
+    <option value="Run or Walk 30 min">Run or Walk 30 min</option>
+    <option value="No sugar all day">No sugar all day</option>
+    <option value="Study 45 min">Study 45 min</option>
+    <option value="Practice skill">Practice a skill</option>
+  </select>
+  <button onclick="addPresetGoal()">Add to My Goals</button>
+</div>
+
+<!-- WHAT WE ARE ABOUT -->
+<section class="about">
+  <h2 id="aboutTitle">What Acsend Systems Does</h2>
+  <p id="aboutText">
+    At Acsend Systems we help you build discipline through structure, consistency and accountability. 
+    Goals aren’t guesses — they’re commitments you make to yourself.
+    Track your progress, maintain your streak and measure your achievements with a system that rewards consistency.
+  </p>
 </section>
 
+<!-- FOOTER -->
 <footer>© Acsend — Consistency Measured</footer>
 
 <script>
+// ====== LANGUAGE CONFIG ======
 let currentLang='en';
-const texts={
-  en:{streak:"Day Streak",score:"Discipline Score",goals:"Goals Today",premiumCTA:"Get Started with Premium"},
-  sv:{streak:"Dagar i rad",score:"Disciplinpoäng",goals:"Dagens mål",premiumCTA:"Börja med Premium"}
+
+const langTexts = {
+  en:{
+    panel1:"DAILY STREAK",
+    panel2:"TODAY'S GOALS",
+    panel3:"DISCIPLINE SCORE",
+    selectTitle:"Choose your goals for today",
+    aboutTitle:"What Acsend Systems Does",
+    aboutText:"At Acsend Systems we help you build discipline through structure, consistency and accountability. Goals aren’t guesses — they’re commitments you make to yourself. Track your progress, maintain your streak and measure your achievements with a system that rewards consistency."
+  },
+  sv:{
+    panel1:"DAGAR I RAD",
+    panel2:"DAGENS MÅL",
+    panel3:"DISCIPLINPOÄNG",
+    selectTitle:"Välj dina mål för idag",
+    aboutTitle:"Vad Acsend Systems gör",
+    aboutText:"På Acsend Systems hjälper vi dig bygga disciplin genom struktur, konsekvens och ansvarighet. Mål är inte gissningar — de är löften du gör till dig själv. Följ din utveckling, behåll din streak och mät dina prestationer med ett system som belönar konsekvens."
+  }
 };
+
 function changeLanguage(lang){
   currentLang=lang;
-  document.getElementById('streak-text').innerText=texts[lang].streak;
-  document.getElementById('score-text').innerText=texts[lang].score;
-  document.getElementById('goals-text').innerText=texts[lang].goals;
-  document.getElementById('premiumCTA').innerText=texts[lang].premiumCTA;
+  document.getElementById('panel‑1‑title').innerText=langTexts[lang].panel1;
+  document.getElementById('panel‑2‑title').innerText=langTexts[lang].panel2;
+  document.getElementById('panel‑3‑title').innerText=langTexts[lang].panel3;
+  document.getElementById('goal‑select‑title').innerText=langTexts[lang].selectTitle;
+  document.getElementById('aboutTitle').innerText=langTexts[lang].aboutTitle;
+  document.getElementById('aboutText').innerText=langTexts[lang].aboutText;
 }
 
-// Dashboard goals
-let goals=[];
-function addGoal(){
-  const input=document.getElementById('goalInput');
-  if(!input.value) return alert('Enter a goal');
-  goals.push({text:input.value,completed:false});
-  input.value='';
+// ====== GOALS LOGIC ======
+let userGoals = [];
+function addPresetGoal(){
+  const select=document.getElementById('goalChoices');
+  userGoals.push(select.value);
   renderGoals();
 }
+
 function renderGoals(){
-  const list=document.getElementById('goalList');
-  list.innerHTML='';
-  goals.forEach((g,i)=>{
-    const li=document.createElement('li');
-    li.innerHTML=`${g.text} <button onclick="toggleGoal(${i})">${g.completed?'Undo':'Done'}</button>`;
-    if(g.completed) li.style.textDecoration='line-through';
-    list.appendChild(li);
-  });
-  document.getElementById('streak').innerText=goals.filter(g=>g.completed).length;
-  document.getElementById('score').innerText=goals.filter(g=>g.completed).length*10;
-  document.getElementById('goalsDone').innerText=goals.filter(g=>g.completed).length;
+  document.getElementById('todaysGoals').innerText=userGoals.length;
+  // Here you can save to localStorage later for persistence
 }
-function toggleGoal(i){goals[i].completed=!goals[i].completed;renderGoals();}
-function goPremium(){ window.location.href='premium.html'; }
+
+// Simulated streak & score
+function updatePanels(){
+  document.getElementById('dailyStreak').innerText = userGoals.length>=1 ? userGoals.length : 0;
+  document.getElementById('disciplineScore').innerText = userGoals.length * 10;
+}
+setInterval(updatePanels, 500); // simple interval for live updates
+
 </script>
+
 </body>
 </html>
