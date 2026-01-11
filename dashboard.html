@@ -1,1 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Acsend Systems • Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0b0b0c;
+  --text: #ffffff;
+  --muted: #8a8a8f;
+  --accent: #FFD700;
+  --panel: rgba(24,24,26,0.85);
+  --shadow: rgba(0,0,0,0.6);
+}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif;}
+body{background:var(--bg);color:var(--text);}
+header{display:flex;justify-content:space-between;align-items:center;padding:24px 40px;background:var(--panel);backdrop-filter:blur(20px);position:sticky;top:0;z-index:1000;}
+header h1{font-size:2rem;font-weight:800;letter-spacing:1px;}
+.nav{display:flex;gap:24px;font-weight:600;font-size:0.95rem;}
+.nav span{cursor:pointer;transition:0.3s;}
+.nav span:hover{color:var(--accent);}
+.language{margin-left:20px;padding:6px 10px;border-radius:10px;border:none;background:#111;color:#fff;cursor:pointer;}
 
+/* HERO */
+.hero{position:relative;text-align:center;padding:120px 20px 80px;background:url('https://images.pexels.com/photos/933964/pexels-photo-933964.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260') center/cover no-repeat;color:var(--text);}
+.hero::after{content:"ACSEND SYSTEMS";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:10rem;font-weight:900;opacity:0.08;white-space:nowrap;}
+.hero-content{position:relative;z-index:2;}
+.hero-content h2{font-size:3rem;font-weight:800;margin-bottom:12px;letter-spacing:2px;}
+.hero-content p{font-size:1.2rem;color:var(--muted);max-width:700px;margin:auto;}
+
+/* PANELS */
+.panels{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;padding:40px 24px;}
+.panel{background:var(--panel);backdrop-filter:blur(15px);border-radius:24px;padding:36px 20px;box-shadow:0 12px 25px var(--shadow);text-align:center;transition:0.3s;}
+.panel:hover{transform:translateY(-8px) scale(1.03);box-shadow:0 20px 40px var(--shadow);}
+.panel h3{font-size:1.8rem;margin-bottom:8px;color:var(--accent);}
+.panel .value{font-size:3rem;font-weight:700;}
+.panel p{font-size:0.95rem;color:var(--muted);}
+
+/* GOAL SELECTOR */
+.goal-selector{padding:28px;background:var(--panel);backdrop-filter:blur(20px);border-radius:24px;margin:24px auto;max-width:640px;text-align:center;box-shadow:0 12px 25px var(--shadow);}
+.goal-selector h3{font-size:1.5rem;margin-bottom:14px;}
+.goal-selector select{width:100%;padding:14px;border:none;border-radius:12px;margin-bottom:14px;background:#111;color:#fff;font-size:1rem;}
+.goal-selector button{width:100%;background:var(--accent);color:#000;font-weight:700;border:none;padding:14px;border-radius:12px;cursor:pointer;transition:0.3s;}
+.goal-selector button:hover{transform:scale(1.05);}
+
+/* ABOUT */
+.about{padding:80px 24px;text-align:center;}
+.about h2{font-size:2.4rem;margin-bottom:16px;}
+.about p{font-size:1.2rem;max-width:900px;margin:auto;color:var(--muted);line-height:1.6;}
+
+/* FOOTER */
+footer{text-align:center;padding:36px;color:var(--muted);font-size:0.85rem;}
+</style>
+</head>
+<body>
+
+<header>
+<h1>Acsend Systems</h1>
+<div class="nav">
+<span onclick="location.href='dashboard.html'">Dashboard</span>
+<span onclick="location.href='history.html'">History</span>
+<span onclick="location.href='settings.html'">Settings</span>
+<span onclick="location.href='premium.html'">Premium</span>
+<select class="language" onchange="changeLanguage(this.value)">
+<option value="en">EN</option>
+<option value="sv">SV</option>
+</select>
+</div>
+</header>
+
+<div class="hero">
+<div class="hero-content">
+<h2>Discipline measured globally</h2>
+<p>No motivation. No excuses. Only structure.</p>
+</div>
+</div>
+
+<div class="panels">
+<div class="panel">
+<h3 id="panel-1-title">DAILY STREAK</h3>
+<div class="value" id="dailyStreak">0</div>
+<p id="panel-1-desc">Longest run of completed goals</p>
+</div>
+
+<div class="panel">
+<h3 id="panel-2-title">TODAY'S GOALS</h3>
+<div class="value" id="todaysGoals">0</div>
+<p id="panel-2-desc">Goals selected for today</p>
+</div>
+
+<div class="panel">
+<h3 id="panel-3-title">DISCIPLINE SCORE</h3>
+<div class="value" id="disciplineScore">0</div>
+<p id="panel-3-desc">Total points earned from consistency</p>
+</div>
+</div>
+
+<div class="goal-selector">
+<h3 id="goal-select-title">Choose your goals for today</h3>
+<select id="goalChoices">
+<option value="Meditate 10 min">Meditate 10 min</option>
+<option value="Read 20 pages">Read 20 pages</option>
+<option value="Run or Walk 30 min">Run or Walk 30 min</option>
+<option value="No sugar all day">No sugar all day</option>
+<option value="Study 45 min">Study 45 min</option>
+<option value="Practice skill">Practice a skill</option>
+</select>
+<button onclick="addPresetGoal()">Add to My Goals</button>
+</div>
+
+<section class="about">
+<h2 id="aboutTitle">What Acsend Systems Does</h2>
+<p id="aboutText">At Acsend Systems we help you build discipline through structure, consistency, and accountability. Track your progress, maintain your streak, and achieve your goals with a system that rewards consistency. No motivation. No excuses. Only structure.</p>
+</section>
+
+<footer>© Acsend — Consistency Measured</footer>
+
+<script>
+// LANGUAGE
+let currentLang='en';
+const langTexts = {
+en:{
+panel1:"DAILY STREAK",
+panel2:"TODAY'S GOALS",
+panel3:"DISCIPLINE SCORE",
+selectTitle:"Choose your goals for today",
+aboutTitle:"What Acsend Systems Does",
+aboutText:"At Acsend Systems we help you build discipline through structure, consistency, and accountability. Track your progress, maintain your streak, and achieve your goals with a system that rewards consistency."
+},
+sv:{
+panel1:"DAGAR I RAD",
+panel2:"DAGENS MÅL",
+panel3:"DISCIPLINPOÄNG",
+selectTitle:"Välj dina mål för idag",
+aboutTitle:"Vad Acsend Systems gör",
+aboutText:"På Acsend Systems hjälper vi dig bygga disciplin genom struktur, konsekvens och ansvarighet. Följ din utveckling, behåll din streak och mät dina prestationer med ett system som belönar konsekvens."
+}
+};
+function changeLanguage(lang){
+currentLang=lang;
+document.getElementById('panel-1-title').innerText=langTexts[lang].panel1;
+document.getElementById('panel-2-title').innerText=langTexts[lang].panel2;
+document.getElementById('panel-3-title').innerText=langTexts[lang].panel3;
+document.getElementById('goal-select-title').innerText=langTexts[lang].selectTitle;
+document.getElementById('aboutTitle').innerText=langTexts[lang].aboutTitle;
+document.getElementById('aboutText').innerText=langTexts[lang].aboutText;
+}
+
+// GOALS
+let userGoals = [];
+function addPresetGoal(){
+const select=document.getElementById('goalChoices');
+userGoals.push(select.value);
+renderGoals();
+}
+function renderGoals(){
+document.getElementById('todaysGoals').innerText=userGoals.length;
+}
+function updatePanels(){
+document.getElementById('dailyStreak').innerText=userGoals.length>=1 ? userGoals.length : 0;
+document.getElementById('disciplineScore').innerText=userGoals.length*10;
+}
+setInterval(updatePanels,500);
+</script>
+
+</body>
+</html>
