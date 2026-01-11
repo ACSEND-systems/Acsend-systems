@@ -9,14 +9,14 @@
 :root {
   --bg: #0b0b0c;
   --text: #ffffff;
-  --muted: #8a8a8f;
+  --muted: #a1a1a5;
   --accent: #FFD700;
   --panel: rgba(24,24,26,0.85);
   --shadow: rgba(0,0,0,0.6);
 }
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif;}
 body{background:var(--bg);color:var(--text);}
-header{display:flex;justify-content:space-between;align-items:center;padding:24px 40px;background:var(--panel);backdrop-filter:blur(20px);position:sticky;top:0;z-index:1000;}
+header{display:flex;justify-content:space-between;align-items:center;padding:24px 40px;background:var(--panel);backdrop-filter:blur(20px);position:sticky;top:0;z-index:1000;border-bottom:1px solid rgba(255,255,255,0.05);}
 header h1{font-size:2rem;font-weight:800;letter-spacing:1px;}
 .nav{display:flex;gap:24px;font-weight:600;font-size:0.95rem;}
 .nav span{cursor:pointer;transition:0.3s;}
@@ -24,15 +24,15 @@ header h1{font-size:2rem;font-weight:800;letter-spacing:1px;}
 .language{margin-left:20px;padding:6px 10px;border-radius:10px;border:none;background:#111;color:#fff;cursor:pointer;}
 
 /* HERO */
-.hero{position:relative;text-align:center;padding:120px 20px 80px;background:url('https://images.pexels.com/photos/933964/pexels-photo-933964.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260') center/cover no-repeat;color:var(--text);}
-.hero::after{content:"ACSEND SYSTEMS";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:10rem;font-weight:900;opacity:0.08;white-space:nowrap;}
+.hero{position:relative;text-align:center;padding:100px 20px 60px;background:url('https://images.pexels.com/photos/933964/pexels-photo-933964.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260') center/cover no-repeat;color:var(--text);}
+.hero::after{content:"ACSEND SYSTEMS";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:8rem;font-weight:900;opacity:0.08;white-space:nowrap;}
 .hero-content{position:relative;z-index:2;}
 .hero-content h2{font-size:3rem;font-weight:800;margin-bottom:12px;letter-spacing:2px;}
 .hero-content p{font-size:1.2rem;color:var(--muted);max-width:700px;margin:auto;}
 
 /* PANELS */
-.panels{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;padding:40px 24px;}
-.panel{background:var(--panel);backdrop-filter:blur(15px);border-radius:24px;padding:36px 20px;box-shadow:0 12px 25px var(--shadow);text-align:center;transition:0.3s;}
+.panels{display:flex;justify-content:space-around;gap:24px;padding:40px 24px;flex-wrap:wrap;}
+.panel{flex:1 1 250px;background:var(--panel);backdrop-filter:blur(15px);border-radius:24px;padding:36px 20px;box-shadow:0 12px 25px var(--shadow);text-align:center;transition:0.3s;min-width:250px;}
 .panel:hover{transform:translateY(-8px) scale(1.03);box-shadow:0 20px 40px var(--shadow);}
 .panel h3{font-size:1.8rem;margin-bottom:8px;color:var(--accent);}
 .panel .value{font-size:3rem;font-weight:700;}
@@ -41,14 +41,14 @@ header h1{font-size:2rem;font-weight:800;letter-spacing:1px;}
 /* GOAL SELECTOR */
 .goal-selector{padding:28px;background:var(--panel);backdrop-filter:blur(20px);border-radius:24px;margin:24px auto;max-width:640px;text-align:center;box-shadow:0 12px 25px var(--shadow);}
 .goal-selector h3{font-size:1.5rem;margin-bottom:14px;}
-.goal-selector select{width:100%;padding:14px;border:none;border-radius:12px;margin-bottom:14px;background:#111;color:#fff;font-size:1rem;}
+.goal-selector input, .goal-selector select{width:100%;padding:14px;border:none;border-radius:12px;margin-bottom:14px;background:#111;color:#fff;font-size:1rem;}
 .goal-selector button{width:100%;background:var(--accent);color:#000;font-weight:700;border:none;padding:14px;border-radius:12px;cursor:pointer;transition:0.3s;}
 .goal-selector button:hover{transform:scale(1.05);}
 
 /* ABOUT */
-.about{padding:80px 24px;text-align:center;}
+.about{padding:80px 24px;text-align:center;background:rgba(255,255,255,0.02);border-radius:24px;margin:40px auto;max-width:1000px;line-height:1.8;box-shadow:0 12px 25px var(--shadow);}
 .about h2{font-size:2.4rem;margin-bottom:16px;}
-.about p{font-size:1.2rem;max-width:900px;margin:auto;color:var(--muted);line-height:1.6;}
+.about p{font-size:1.2rem;color:var(--muted);}
 
 /* FOOTER */
 footer{text-align:center;padding:36px;color:var(--muted);font-size:0.85rem;}
@@ -98,21 +98,22 @@ footer{text-align:center;padding:36px;color:var(--muted);font-size:0.85rem;}
 </div>
 
 <div class="goal-selector">
-<h3 id="goal-select-title">Choose your goals for today</h3>
-<select id="goalChoices">
-<option value="Meditate 10 min">Meditate 10 min</option>
-<option value="Read 20 pages">Read 20 pages</option>
-<option value="Run or Walk 30 min">Run or Walk 30 min</option>
-<option value="No sugar all day">No sugar all day</option>
-<option value="Study 45 min">Study 45 min</option>
-<option value="Practice skill">Practice a skill</option>
-</select>
-<button onclick="addPresetGoal()">Add to My Goals</button>
+<h3 id="goal-select-title">Add your own goal</h3>
+<input type="text" id="customGoal" placeholder="Enter your goal">
+<button onclick="addCustomGoal()">Add Goal</button>
 </div>
 
 <section class="about">
 <h2 id="aboutTitle">What Acsend Systems Does</h2>
-<p id="aboutText">At Acsend Systems we help you build discipline through structure, consistency, and accountability. Track your progress, maintain your streak, and achieve your goals with a system that rewards consistency. No motivation. No excuses. Only structure.</p>
+<p id="aboutText">
+At Acsend Systems we help you build discipline through structure, consistency, and accountability. 
+Track your progress, maintain your streak, and achieve your goals with a system that rewards consistency. 
+Set daily goals, measure your discipline score, and create your personal streak history. 
+No motivation. No excuses. Only structure. 
+Join users worldwide who are enhancing their productivity. 
+Our platform is designed to be intuitive, clean, and powerful. 
+With Acsend Systems, every action counts toward building a consistent life.
+</p>
 </section>
 
 <footer>© Acsend — Consistency Measured</footer>
@@ -125,17 +126,17 @@ en:{
 panel1:"DAILY STREAK",
 panel2:"TODAY'S GOALS",
 panel3:"DISCIPLINE SCORE",
-selectTitle:"Choose your goals for today",
+selectTitle:"Add your own goal",
 aboutTitle:"What Acsend Systems Does",
-aboutText:"At Acsend Systems we help you build discipline through structure, consistency, and accountability. Track your progress, maintain your streak, and achieve your goals with a system that rewards consistency."
+aboutText:"At Acsend Systems we help you build discipline through structure, consistency, and accountability. Track your progress, maintain your streak, and achieve your goals with a system that rewards consistency. Set daily goals, measure your discipline score, and create your personal streak history. No motivation. No excuses. Only structure. Join users worldwide who are enhancing their productivity. Our platform is designed to be intuitive, clean, and powerful. With Acsend Systems, every action counts toward building a consistent life."
 },
 sv:{
 panel1:"DAGAR I RAD",
 panel2:"DAGENS MÅL",
 panel3:"DISCIPLINPOÄNG",
-selectTitle:"Välj dina mål för idag",
+selectTitle:"Lägg till eget mål",
 aboutTitle:"Vad Acsend Systems gör",
-aboutText:"På Acsend Systems hjälper vi dig bygga disciplin genom struktur, konsekvens och ansvarighet. Följ din utveckling, behåll din streak och mät dina prestationer med ett system som belönar konsekvens."
+aboutText:"På Acsend Systems hjälper vi dig bygga disciplin genom struktur, konsekvens och ansvarighet. Följ din utveckling, behåll din streak och mät dina prestationer med ett system som belönar konsekvens. Sätt dagliga mål, mät dina disciplinpoäng och skapa din personliga streak-historik. Inga ursäkter. Ingen motivation. Endast struktur. Anslut dig till användare världen över som ökar sin produktivitet. Vårt system är intuitivt, rent och kraftfullt. Med Acsend Systems räknas varje handling för att bygga en konsekvent vardag."
 }
 };
 function changeLanguage(lang){
@@ -150,10 +151,13 @@ document.getElementById('aboutText').innerText=langTexts[lang].aboutText;
 
 // GOALS
 let userGoals = [];
-function addPresetGoal(){
-const select=document.getElementById('goalChoices');
-userGoals.push(select.value);
+function addCustomGoal(){
+const input=document.getElementById('customGoal');
+if(input.value.trim()!==""){
+userGoals.push(input.value.trim());
+input.value="";
 renderGoals();
+}
 }
 function renderGoals(){
 document.getElementById('todaysGoals').innerText=userGoals.length;
